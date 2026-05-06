@@ -2,12 +2,10 @@ package com.example.flachCash.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Data
-public class UserAcount {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +13,12 @@ public class UserAcount {
     private Double amount;
     private String iban;
 
-    public UserAcount plus(Double amount){
+    public UserAccount plus(Double amount){
         this.amount += amount;
         return this;
     }
 
-    public UserAcount minus(Double amount){
+    public UserAccount minus(Double amount){
         this.amount -= amount;
         return this;
     }

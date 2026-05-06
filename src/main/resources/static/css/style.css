@@ -1,0 +1,55 @@
+header {
+    background-color: white;
+    padding: 15px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 20px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+.logo-header{
+    display: block;
+    width: 220px;
+    height: auto;
+    margin-left: 120px
+}
+.logo-footer{
+    display: block;
+    width: 80px;
+    height: 80px;
+}
+
+.bg-column{
+    background-color: blue;
+    text-decoration-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
+    font-family: var(--bs-btn-font-family), serif;
+}
+.bg-column button{
+    border: #0a53be 1px solid;
+    background-color: white;
+    width: 100%;
+}
+#footer-margin{
+    margin-top: 80px;
+    margin-left: 80px;
+    width: 1400px;
+
+}
+

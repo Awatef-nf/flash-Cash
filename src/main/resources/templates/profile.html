@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+</head>
+<body>
+
+<header  class="p-3">
+    <div class="d-flex align-items-center">
+
+        <!-- Logo à gauche -->
+        <div>
+            <img th:src="@{/img/flash_cash_logo.png}" alt="">
+        </div>
+
+        <!-- Liens à droite -->
+        <nav class="d-flex gap-4 ms-auto">
+            <a class="text-decoration-none fw-bold" th:href="@{/}">Home</a>
+            <a class="text-decoration-none fw-bold" th:href="@{/transfer}">Transfer</a>
+            <a class="text-decoration-none fw-bold" th:href="@{/profile}">Profile</a>
+            <a class="text-decoration-none fw-bold" th:href="@{/contact}">Contact</a>
+
+            <a class="text-decoration-none fw-bold"
+               href="#"
+               onclick="document.getElementById('logout-form').submit()">
+                LogOut
+            </a>
+            <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
+        </nav>
+
+    </div>
+</header>
+
+<div class="container d-flex justify-content-start align-items-center justify-content-center">
+<!--ADD Cash to your flashCash-->
+<div class="container d-flex justify-content-center">
+
+    <div class="card p-4 shadow" style="width: 350px;">
+
+        <p class="btn btn-primary btn-sm">Add cash to Flash Cash</p>
+        <p class="text-center mb-4">Add cash with your credit card</p>
+        <p class="text-center mb-4">Free</p>
+        <p class="text-center mb-4">Instant deposit</p>
+        <p class="text-center mb-4">Fully secured</p>
+        <!-- Buttons -->
+        <form  class="btn-sm" th:action="@{/addCash}" method="post">
+            <div class="d-grid">
+                <input class="btn btn-success btn-lg" type="submit" value="Start">
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Transfer to your bank-->
+<div class="container d-flex justify-content-center">
+
+    <div class="card p-4 shadow" style="width: 350px;">
+
+        <p class="btn btn-primary btn-sm">Transfer to your bank</p>
+        <p class="text-center mb-4">Instant transfer</p>
+        <p class="text-center mb-4">Free</p>
+        <p class="text-center mb-4">Worldwide</p>
+        <p class="text-center mb-4">Fully secured</p>
+        <!-- Buttons -->
+        <form  class="btn-sm" th:action="@{/addCash}" method="post">
+            <div class="d-grid">
+                <input class="btn btn-success btn-lg" type="submit" value="Start">
+            </div>
+        </form>
+    </div>
+</div>
+                            <!--ADD IBAN-->
+<div class="container d-flex justify-content-center">
+
+
+    <div class="card p-4 shadow" style="width: 350px;">
+
+        <p class="btn btn-primary btn-sm">Add An Iban</p>
+        <p class="text-center mb-4">Add your IBAN here</p>
+        <p class="text-center mb-4">Up to 5 IBAN</p>
+        <p class="text-center mb-4">Any bank supported</p>
+        <p class="text-center mb-4">Fully secured</p>
+            <!-- Buttons -->
+            <form  class="btn-sm" th:action="@{/addIban}" method="post">
+                <div class="d-grid">
+                    <input class="btn btn-success btn-lg" type="submit" value="Start">
+                </div>
+            </form>
+    </div>
+</div>
+</div>
+<footer >
+    <div id="footer-margin" class="card p-4 shadow">
+        <div class="container d-flex align-items-center justify-content-between">
+            <!-- Logo -->
+            <div class="logo-footer">
+                <img th:src="@{/img/flash_cash_logo.png}" alt="Image" >
+            </div>
+
+            <!-- Section 1 -->
+            <div class="d-flex flex-column">
+                <h5>Cash transfer</h5>
+                <a href="#">FAQ</a>
+                <a href="#">Why using FlashCash</a>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="d-flex flex-column">
+                <h5>Need help?</h5>
+                <a href="#">Live chat</a>
+                <a href="#">Contact us</a>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="d-flex flex-column">
+                <h5>About</h5>
+                <a href="#">Team</a>
+                <a href="#">Locations</a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+
+
+<!--[Clic Sign Out]-->
+<!--|-->
+<!--v-->
+<!--[POST /logout + token CSRF]-->
+<!--|-->
+<!--v-->
+<!--[Spring vérifie le token]-->
+<!--|-->
+<!--v-->
+<!--[Session détruite]-->
+<!--|-->
+<!--v-->
+<!--[Redirection /login]-->

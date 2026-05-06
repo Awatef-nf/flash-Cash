@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+
+</head>
+<body>
+
+<header>
+    <header class="bg-dark p-3">
+        <nav class="d-flex justify-content-end gap-3">
+            <a class="text-white text-decoration-none fw-bold" th:href="@{/}">Home</a>
+            <a class="text-white text-decoration-none fw-bold" th:href="@{/transfer}">Transfer</a>
+            <a class="text-white text-decoration-none fw-bold" th:href="@{/profile}">Profile</a>
+            <a class="text-white text-decoration-none fw-bold" th:href="@{/contact}">Contact</a>
+            <a class="text-white text-decoration-none fw-bold" th:href="@{/logout}">Sign out</a>
+        </nav>
+    </header>
+</header>
+
+<div class="container mt-4">
+    <h1>Bienvenue</h1>
+</div>
+
+</body>
+</html>
