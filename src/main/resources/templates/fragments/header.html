@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>header</title>
+</head>
+<body>
+<div th:fragment="header">
+
+<div class="d-flex align-items-center">
+
+    <!-- Logo à gauche -->
+    <div class="logo-header">
+        <img th:src="@{/img/flash_cash_logo.png}" alt="">
+    </div>
+
+    <!-- TITLE -->
+    <div class="flashcash">
+        <h1>Flash Cash</h1>
+        <p class="tagline">Send money instantly</p>
+    </div>
+
+    <!-- Liens à droite -->
+    <nav class="d-flex gap-4 ms-auto" style="margin-top: -3%">
+        <a class="text-decoration-none fw-bold" th:href="@{/static}">Home</a>
+        <a class="text-decoration-none fw-bold" th:href="@{/transfer}">Transfer</a>
+        <a class="text-decoration-none fw-bold" th:href="@{/profile}">Profile</a>
+        <a class="text-decoration-none fw-bold" th:href="@{/contact}">Contact</a>
+
+        <a class="text-decoration-none fw-bold"
+           href="#"
+           onclick="document.getElementById('logout-form').submit()">
+            LogOut
+        </a>
+        <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
+    </nav>
+
+</div>
+</div>
+</body>
+</html>
