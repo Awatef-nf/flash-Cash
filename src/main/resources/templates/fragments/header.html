@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>header</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
 <div th:fragment="header">
@@ -21,16 +24,16 @@
     </div>
 
     <!-- Liens à droite -->
-    <nav class="d-flex gap-4 ms-auto" style="margin-top: -3%">
-        <a class="text-decoration-none fw-bold" th:href="@{/static}">Home</a>
-        <a class="text-decoration-none fw-bold" th:href="@{/transfer}">Transfer</a>
-        <a class="text-decoration-none fw-bold" th:href="@{/profile}">Profile</a>
-        <a class="text-decoration-none fw-bold" th:href="@{/contact}">Contact</a>
+    <nav class="d-flex gap-4 ms-auto" style="margin-top: -1%">
+        <a class="text-decoration-none " th:href="@{/home}">Home</a>
+        <a class="text-decoration-none " th:href="@{/transfer}">Transfer</a>
+        <a class="text-decoration-none " th:href="@{/profile}">Profile</a>
+        <a class="text-decoration-none " th:href="@{/contact}">Contact</a>
 
-        <a class="text-decoration-none fw-bold"
+        <a class="text-decoration-none"
            href="#"
            onclick="document.getElementById('logout-form').submit()">
-            LogOut
+            Logout
         </a>
         <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
     </nav>

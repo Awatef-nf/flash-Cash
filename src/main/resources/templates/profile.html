@@ -6,10 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
-
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
 
 </head>
 <body>
@@ -28,12 +26,12 @@
     <div class="card p-4 shadow" style="width: 350px;">
 
         <p class="btn btn-primary btn-sm">Add cash to Flash Cash</p>
-        <p class="text-center mb-4">Add cash with your credit card</p>
-        <p class="text-center mb-4">Free</p>
-        <p class="text-center mb-4">Instant deposit</p>
-        <p class="text-center mb-4">Fully secured</p>
+        <p class="text-center">Add cash with your credit card</p>
+        <p class="text-center ">Free</p>
+        <p class="text-center ">Instant deposit</p>
+        <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/addCash}" method="post">
+        <form  class="btn-sm" th:action="@{/addCash}" method="get">
             <div class="d-grid">
                 <input class="btn-start" type="submit" value="Start">
             </div>
@@ -47,12 +45,12 @@
     <div class="card p-4 shadow" style="width: 350px;">
 
         <p class="btn btn-primary btn-sm">Transfer to your bank</p>
-        <p class="text-center mb-4">Instant transfer</p>
-        <p class="text-center mb-4">Free</p>
-        <p class="text-center mb-4">Worldwide</p>
-        <p class="text-center mb-4">Fully secured</p>
+        <p class="text-center ">Instant transfer</p>
+        <p class="text-center ">Free</p>
+        <p class="text-center ">Worldwide</p>
+        <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/transferCash}" method="post">
+        <form  class="btn-sm" th:action="@{/transfer}" method="get">
             <div class="d-grid">
                 <input class="btn-start" type="submit" value="Start">
             </div>
@@ -66,12 +64,12 @@
     <div class="card p-4 shadow" style="width: 350px;">
 
         <p class="btn btn-primary btn-sm">Add An Iban</p>
-        <p class="text-center mb-4">Add your IBAN here</p>
-        <p class="text-center mb-4">Up to 5 IBAN</p>
-        <p class="text-center mb-4">Any bank supported</p>
-        <p class="text-center mb-4">Fully secured</p>
+        <p class="text-center ">Add your IBAN here</p>
+        <p class="text-center ">Up to 5 IBAN</p>
+        <p class="text-center ">Any bank supported</p>
+        <p class="text-center ">Fully secured</p>
             <!-- Buttons -->
-            <form  class="btn-sm" th:action="@{/addIban}" method="post">
+            <form  class="btn-sm" th:action="@{/addIban}" method="get">
                 <div class="d-grid">
                     <input class="btn-start" type="submit" value="Start">
                 </div>
@@ -93,8 +91,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td sec:authentication="principal.username"></td>
-                    <td class="text-danger">-502.5</td>
+                    <td th:text="${user.email}">email</td>
+                    <td th:text="${user.account.amount}"></td>
                 </tr>
                 </tbody>
             </table>

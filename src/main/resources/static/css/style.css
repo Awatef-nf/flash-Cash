@@ -106,7 +106,7 @@ nav a:hover {
 }
 .footer{
     background-color: #8080801c;
-    font-size: 10px;
+    font-size: 14px;
     padding: 10px;
 }
 body{
@@ -147,4 +147,7 @@ body{
     height: 45px;
     border-radius: 12px;
     font-weight: 600;
+}
+.btn-custom:hover{
+    color: firebrick;
 }

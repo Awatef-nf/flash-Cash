@@ -1,9 +1,12 @@
 package com.example.flachCash.controller;
 
 
+import com.example.flachCash.domain.Link;
 import com.example.flachCash.domain.User;
 import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +22,6 @@ public class UserController {
 
     private final UserService userService;
 
-    private final PasswordEncoder passwordEncoder;
-
-
     @GetMapping("/register")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
@@ -30,23 +30,47 @@ public class UserController {
     }
     @PostMapping("/register")
     public String signUp(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("user",new User());
-
-        if (userService.findUserByEmail(user.getEmail()).isEmpty()) {
-
-            User newUser = User.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .email(user.getEmail())
-                    .password(passwordEncoder.encode(user.getPassword()))
-                    .role(USER)
-                    .build();
-
-            userService.addUser(newUser);
+        try {
+            userService.register(user);
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage()); // ✅ "Email déjà utilisé"
+            model.addAttribute("user", user); // ✅ garde les champs remplis
+            return "register"; // ✅ reste sur la page
         }
-
-        return "redirect:/login";
     }
 
+    @GetMapping("/profile")
+    public String showProfile(Authentication authentication, Model model) {
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @GetMapping("/transfer")
+    public String showTransfer(Authentication authentication,Model model) {
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
+        return "transfer";
+    }
+
+    @PostMapping("/transfer")
+    public String transfer() {
+        return "redirect: profile";
+    }
+
+
+    @GetMapping("/addCash")
+    public String showAddCash(Authentication authentication,Model model) {
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
+        return "addCash";
+    }
+    @GetMapping("/addIban")
+    public String showAddIban(Authentication authentication,Model model) {
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
+        return "addIban";
+    }
 
 }

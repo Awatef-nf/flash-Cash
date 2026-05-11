@@ -1,10 +1,16 @@
 package com.example.flachCash.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAccount {
 
     @Id
@@ -18,8 +24,8 @@ public class UserAccount {
         return this;
     }
 
-    public UserAccount minus(Double amount){
-        this.amount -= amount;
+    public UserAccount minus(Double minus){
+        this.amount -=minus;
         return this;
     }
 
