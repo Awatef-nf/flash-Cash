@@ -6,17 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@Entity
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount {
+@NoArgsConstructor
+@Table(name = "savedIban")
+public class SavedIban {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer accountId;
-    private Double amount;
+    private Long id;
+
     private String iban;
 
+    private String bankName;
+
+    @ManyToOne
+    private User user;
 }

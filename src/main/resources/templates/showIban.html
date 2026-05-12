@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+</head>
+<body>
+<div class="content">
+<div th:replace="fragments/header :: header"></div>
+<div class="content">
+<div class="container d-flex justify-content-center">
+    <div class="card p-4 shadow">
+
+        <table class="table table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>Bank Name</th>
+                <th>IBan</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="iban : ${ibans}">
+                <td th:text="${iban.bankName}"></td>
+                <td th:text="${iban.iban}"></td>
+                <td class="d-flex gap-2">
+
+                    <!-- MODIFY -->
+                    <a th:href="@{/showIban/{id}(id=${iban.id})}"
+                       class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+                         Modify
+                    </a>
+
+                    <!-- DELETE -->
+                    <form th:action="@{/deleteIban/{id}(id=${iban.id})}"
+                          method="post"
+                          onsubmit="return confirm('Are you sure you want to delete this IBAN ?');">
+
+                        <button type="submit"
+                                class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
+                             Delete
+                        </button>
+
+                    </form>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

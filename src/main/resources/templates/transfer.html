@@ -8,7 +8,29 @@
 
 </head>
 <body>
+<div class="content">
 <div th:replace="fragments/header :: header"></div>
+
+
+<div class="container d-flex justify-content-center">
+
+    <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+
+        <p class="text-center">Instant transfer</p>
+
+        <form th:action="@{/transfer}" method="get">
+            <div class="mb-3">
+                <input type="text" id="Iban" name="Iban" class="form-control mb-2" placeholder="FR 76 2001 0101 1505 0001 3M02 606" required>
+                <input type="text" id="Amount" name="Amount" class="form-control" placeholder="Amount €" >
+            </div>
+            <div class="d-grid">
+                <input class="btn-start btn-sm" type="submit" value="Transfer">
+            </div>
+        </form>
+
+    </div>
+</div>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

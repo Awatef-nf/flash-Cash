@@ -1,4 +1,4 @@
 package com.example.flachCash.repository;
 
-public class LinkRepository {
+public interface LinkRepository {
 }

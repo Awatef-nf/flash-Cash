@@ -49,11 +49,11 @@ nav a:hover {
 }
 
 .btn-start{
-    background-color : white;
-    border-color: dodgerblue;
+    background-color :#22d693;;
     border-radius: 8%;
     margin-left: 30%;
     margin-right: 30%;
+    border: none;
 }
 
 #my-profile{
@@ -150,4 +150,17 @@ body{
 }
 .btn-custom:hover{
     color: firebrick;
+}
+.content {
+    flex: 1; /* prend tout l’espace disponible */
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }

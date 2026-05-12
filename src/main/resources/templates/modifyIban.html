@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="content">
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container d-flex justify-content-center">
+        <div class="card p-4 shadow">
+
+            <form th:action="@{/modifyIban/{id}(id=${ibanData.get().id})}" method="post">
+
+                <input type="text"
+                       name="bankName"
+                       th:value="${ibanData.get().bankName}"
+                       class="form-control mb-2">
+
+                <input type="text"
+                       name="iban"
+                       th:value="${ibanData.get().iban}"
+                       class="form-control mb-2">
+
+                <button type="submit" class="btn btn-success">
+                    Save
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

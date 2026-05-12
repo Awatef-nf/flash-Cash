@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,6 +9,36 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
+
+<div class="container d-flex justify-content-center">
+
+    <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <p class="text-center">Add Iban </p>
+
+        <form th:action="@{/addIban}" method="post">
+            <div class="mb-3">
+                <input type="text"
+                       name="bankName"
+                       class="form-control mb-2"
+                       placeholder="Bank Name"
+                       required>
+
+                <input type="text"
+                       name="iban"
+                       class="form-control mb-2"
+                       placeholder="FR76...."
+                       required>
+
+            </div>
+            <div class="d-grid">
+                <input class="btn-start btn-sm" type="submit" value="Add">
+            </div>
+        </form>
+
+    </div>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

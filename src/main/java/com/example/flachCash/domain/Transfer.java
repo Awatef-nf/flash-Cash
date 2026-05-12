@@ -20,4 +20,5 @@ public class Transfer {
     private Double accountAfterFee;
 
 
+
 }

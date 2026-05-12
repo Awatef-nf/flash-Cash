@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +15,9 @@
 <!--------------------------------------------MY PROFILE-->
 <div class="card p-4 shadow" id="my-profile">
     <div class="my-profile">
-        <h2> My profile</h2>
+        <h2><span th:text="${user.firstName}"></span>
+        <span th:text="${user.lastName}"></span>
+        </h2>
     </div>
 
 <div class="container d-flex justify-content-start align-items-center justify-content-center">
@@ -33,7 +34,7 @@
         <!-- Buttons -->
         <form  class="btn-sm" th:action="@{/addCash}" method="get">
             <div class="d-grid">
-                <input class="btn-start" type="submit" value="Start">
+                <input class="btn btn-primary btn-sm" type="submit" value="Start">
             </div>
         </form>
     </div>
@@ -52,7 +53,7 @@
         <!-- Buttons -->
         <form  class="btn-sm" th:action="@{/transfer}" method="get">
             <div class="d-grid">
-                <input class="btn-start" type="submit" value="Start">
+                <input class="btn btn-primary btn-sm" type="submit" value="Start">
             </div>
         </form>
     </div>
@@ -69,11 +70,19 @@
         <p class="text-center ">Any bank supported</p>
         <p class="text-center ">Fully secured</p>
             <!-- Buttons -->
-            <form  class="btn-sm" th:action="@{/addIban}" method="get">
-                <div class="d-grid">
-                    <input class="btn-start" type="submit" value="Start">
-                </div>
-            </form>
+        <div class="d-flex justify-content-center gap-3">
+
+            <a th:href="@{/addIban}" class="btn btn-primary btn-sm">
+                <i class="ti ti-player-play"></i>
+                Start
+            </a>
+
+            <a th:href="@{/showIban}" class="btn btn-primary btn-sm">
+                <i class="ti ti-credit-card"></i>
+                Show IBAN
+            </a>
+
+        </div>
     </div>
     </div>
     </div>

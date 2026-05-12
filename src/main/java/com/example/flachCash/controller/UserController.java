@@ -2,7 +2,9 @@ package com.example.flachCash.controller;
 
 
 import com.example.flachCash.domain.Link;
+import com.example.flachCash.domain.SavedIban;
 import com.example.flachCash.domain.User;
+import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+
 import static com.example.flachCash.domain.Role.USER;
 
 @Controller
@@ -21,6 +26,7 @@ public class UserController {
 
 
     private final UserService userService;
+    private final SavedIbanService savedIbanService;
 
     @GetMapping("/register")
     public String showForm(Model model) {
@@ -34,9 +40,9 @@ public class UserController {
             userService.register(user);
             return "redirect:/login";
         } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage()); // ✅ "Email déjà utilisé"
-            model.addAttribute("user", user); // ✅ garde les champs remplis
-            return "register"; // ✅ reste sur la page
+            model.addAttribute("error", e.getMessage()); //  "Email déjà utilisé"
+            model.addAttribute("user", user); //  garde les champs remplis
+            return "register"; //  reste sur la page
         }
     }
 
@@ -59,18 +65,18 @@ public class UserController {
         return "redirect: profile";
     }
 
+    @GetMapping("/showIban")
+    public String showIbans(Authentication authentication, Model model) {
 
-    @GetMapping("/addCash")
-    public String showAddCash(Authentication authentication,Model model) {
-        User user = (User) authentication.getPrincipal();
-        model.addAttribute("user", user);
-        return "addCash";
+        String email = authentication.getName();
+        User user = userService.findUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<SavedIban> ibans = savedIbanService.showIbans(user.getId());
+        model.addAttribute("ibans", ibans);
+
+        return "showIban";
     }
-    @GetMapping("/addIban")
-    public String showAddIban(Authentication authentication,Model model) {
-        User user = (User) authentication.getPrincipal();
-        model.addAttribute("user", user);
-        return "addIban";
-    }
+
 
 }

@@ -3,7 +3,6 @@ package com.example.flachCash.controller;
 import com.example.flachCash.domain.Link;
 import com.example.flachCash.domain.User;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +19,7 @@ public class LinkController {
     public String showContact(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("role", USER);
-        return "contact";
+        return "link";
     }
 
 
