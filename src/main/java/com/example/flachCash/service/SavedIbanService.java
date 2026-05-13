@@ -52,20 +52,13 @@ public class SavedIbanService {
         savedIbanRepository.delete(savedIban);
     }
 
-    public void modifyIban(Long id,
-                           String iban,
-                           String bankName,
-                           User user) {
+    public void modifyIban(String iban, String bankName, User user){
 
-        SavedIban savedIban = savedIbanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("IBAN not found"));
-
-        if (!savedIban.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("Unauthorized");
-        }
-
-        savedIban.setIban(iban);
-        savedIban.setBankName(bankName);
+            SavedIban savedIban = SavedIban.builder()
+                    .iban(iban)
+                    .bankName(bankName)
+                    .user(user)
+                    .build();
 
         savedIbanRepository.save(savedIban);
     }

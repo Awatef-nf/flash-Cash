@@ -12,8 +12,8 @@ public class Link {
     Integer id;
 
     @ManyToOne
-    User userTo;
+    User userOwner;
 
     @ManyToOne
-    User userFrom;
+    User userFriend;
 }

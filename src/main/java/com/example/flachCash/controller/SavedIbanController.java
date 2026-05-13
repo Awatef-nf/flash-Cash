@@ -4,7 +4,6 @@ import com.example.flachCash.domain.User;
 import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.Delegate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,11 +84,13 @@ public class SavedIbanController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         try {
-            savedIbanService.modifyIban(id, iban, bankName, user);
+            savedIbanService.modifyIban(iban, bankName, user);
 
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
 
         return "redirect:/showIban";
-    }}
+    }
+
+}

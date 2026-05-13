@@ -11,14 +11,57 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="content">
 
-<div class="container-fluid">
-    <div>
-        <button th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-                th:action="@{/delete}" class="btn btn-custom">
-            Delete
-        </button>
+<!--<div class="container-fluid">-->
+<!--    <div>-->
+<!--        <button th:if="${#authorization.expression('hasRole(''ADMIN'')')}"-->
+<!--                th:action="@{/delete}" class="btn btn-custom">-->
+<!--            Delete-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+
+        <div class="card p-4 shadow">
+
+            <table class="table table-hover ">
+                <thead >
+                <tr>
+                    <th>Link List</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="link : ${user.getLinks()}">
+                    <td th:text="${link.userFriend}"></td>
+                    <td th:text="${user.account.iban}"></td>
+                    <td class="d-flex gap-2">
+
+
+                        <!-- DELETE -->
+                        <form th:action="@{/deleteLink/{id}(id=${link.id})}"
+                              method="post"
+                              onsubmit="return confirm('Are you sure you want to delete this link ?');">
+
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
+                                Delete
+                            </button>
+
+                        </form>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+        </div>
     </div>
-</div>
+
+
+
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

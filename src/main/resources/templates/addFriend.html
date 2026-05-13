@@ -9,9 +9,27 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-
 <div class="content">
 
+    <div class="container d-flex justify-content-center">
+
+        <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+            <form th:action="@{/addFriend}" method="get">
+                <div class="mb-3">
+                    <label for="emailFriend"></label>
+                    <select id="emailFriend" name="friendEmail" class="form-select mb-2" required>
+                        <option value="">--Select Friend --</option>
+
+                        <option th:each="link : ${links}"
+                                th:value="${link.userFriend.account.iban}"
+                                th:text="${link.userFriend.account.iban}">
+                    </select>
+                </div>
+            </form>
+    </div>
+
+
+</div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 </body>

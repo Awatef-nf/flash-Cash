@@ -29,7 +29,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Link> links;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

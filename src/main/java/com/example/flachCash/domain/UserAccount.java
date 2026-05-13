@@ -18,5 +18,4 @@ public class UserAccount {
     private Integer accountId;
     private Double amount;
     private String iban;
-
 }
