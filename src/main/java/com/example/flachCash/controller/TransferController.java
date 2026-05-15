@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TransferController {
 
-    private final TransferService trandferService;
+    private final TransferService transferService;
     private final UserService userService;
     private final SavedIbanService savedIbanService;
 

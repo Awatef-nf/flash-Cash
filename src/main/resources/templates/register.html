@@ -12,78 +12,113 @@
 </head>
 
 <body class="bg-light">
-
+<div class="content">
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
 
-    <div class="card shadow p-4" style="width: 400px; border-radius: 15px;">
+    <div class="card shadow-lg p-4" style="width: 420px;">
 
-        <h3 class="text-center mb-1">Create Account</h3>
+        <!-- HEADER -->
+        <div class="text-center mb-4">
+
+            <div class="icon-circle bg-primary text-white mx-auto">
+                <i class="bi bi-person-circle fs-1"></i>
+            </div>
+
+            <h3 class="mt-3 fw-bold">Create Account</h3>
+            <p class="text-muted">Join FlashCash in seconds</p>
+
+        </div>
 
         <!-- FORM -->
         <form th:action="@{/register}" th:object="${user}" method="post">
-            <div th:if="${error}" class="alert alert-danger">
-                <p th:text="${error}"></p>
+
+            <!-- ERROR -->
+            <div th:if="${error}" class="alert alert-danger py-2">
+                <span th:text="${error}"></span>
             </div>
 
-
-            <!-- First Name -->
-            <div class="mb-3">
-                <label class="form-label">First name</label>
-                <label>
-                    <input type="text" class="form-control"
+            <!-- FIRST NAME -->
+            <div class="mb-2">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-person"></i>
+                    </span>
+                    <input type="text"
+                           class="form-control"
                            th:field="*{firstName}"
-                           placeholder="Enter first name" required>
-                </label>
+                           placeholder="First name"
+                           required>
+                </div>
             </div>
 
-            <!-- Last Name -->
-            <div class="mb-3">
-                <label class="form-label">Last name</label>
-                <label>
-                    <input type="text" class="form-control"
+            <!-- LAST NAME -->
+            <div class="mb-2">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-person-badge"></i>
+                    </span>
+                    <input type="text"
+                           class="form-control"
                            th:field="*{lastName}"
-                           placeholder="Enter last name" required>
-                </label>
+                           placeholder="Last name"
+                           required>
+                </div>
             </div>
 
-            <!-- Email -->
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <label>
-                    <input type="email" class="form-control"
+            <!-- EMAIL -->
+            <div class="mb-2">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email"
+                           class="form-control"
                            th:field="*{email}"
-                           placeholder="Enter email" required>
-                </label>
+                           placeholder="Email"
+                           required>
+                </div>
             </div>
 
-            <!-- Password -->
+            <!-- PASSWORD -->
             <div class="mb-3">
-                <label class="form-label">Password</label>
-                <label>
-                    <input type="password" class="form-control"
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password"
+                           class="form-control"
                            th:field="*{password}"
-                           placeholder="Enter password" required>
-                </label>
+                           placeholder="Password"
+                           required>
+                </div>
             </div>
 
-            <!-- Submit -->
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">
-                    Sign up
-                </button>
-            </div>
+            <!-- BUTTON -->
+            <button type="submit" class="btn btn-primary w-100 py-2">
+                <i class="bi bi-check-circle"></i> Sign Up
+            </button>
 
         </form>
 
+        <!-- FOOTER -->
         <div class="text-center mt-3">
-            <small>Already have an account?
-                <a th:href="@{/login}" class="signup-link ms-1">Login</a>
-            </small>
+            <small>Already have an account?</small>
+            <a th:href="@{/login}" class="text-primary fw-semibold text-decoration-none">
+                Login
+            </a>
         </div>
 
     </div>
 
 </div>
-
+</div>
 </body>
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-3 mt-5">
+    <div class="container text-center">
+        <p class="mb-0">
+            © 2026 FlashCash - Application de transfert d'argent
+        </p>
+    </div>
+</footer>
 </html>

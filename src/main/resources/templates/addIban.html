@@ -11,7 +11,6 @@
 <div th:replace="fragments/header :: header"></div>
 <div class="content">
 <div class="container d-flex justify-content-center">
-
     <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
@@ -37,6 +36,7 @@
             <div class="d-grid">
                 <input class="btn-start btn-sm" type="submit" value="Add">
             </div>
+
         </form>
 
     </div>

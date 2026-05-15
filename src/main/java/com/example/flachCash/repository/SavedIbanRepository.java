@@ -6,13 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+import java.util.Optional;
 @Repository
 public interface SavedIbanRepository extends JpaRepository<SavedIban, Long> {
 
-    boolean existsByIbanAndUserId(String iban, Integer id);
+    boolean existsByIbanAndUser_Id(String iban, Integer userId);
 
-    List<SavedIban> findByUserId(Integer userId);
+    boolean existsByIbanAndUser_IdAndIdNot(String iban, Integer userId, Long id);
 
-    SavedIban findSavedIbansById(Long id);
+    List<SavedIban> findByUser_Id(Integer userId);
+
+    Optional<SavedIban> findByIdAndUser_Id(Long id, Integer userId);
+
+    int countByUser_Id(Integer id);
 }

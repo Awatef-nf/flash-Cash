@@ -21,7 +21,7 @@ public class SavedIban {
     private String iban;
 
     private String bankName;
-
     @ManyToOne
     private User user;
+
 }

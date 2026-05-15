@@ -34,6 +34,8 @@ public class UserController {
         model.addAttribute("role", USER);
         return "register";
     }
+
+
     @PostMapping("/register")
     public String signUp(@ModelAttribute("user") User user, Model model) {
         try {
@@ -42,7 +44,7 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage()); //  "Email déjà utilisé"
             model.addAttribute("user", user); //  garde les champs remplis
-            return "register"; //  reste sur la page
+            return "register";
         }
     }
 
@@ -64,6 +66,8 @@ public class UserController {
     public String transfer() {
         return "redirect: profile";
     }
+
+
 
     @GetMapping("/showIban")
     public String showIbans(Authentication authentication, Model model) {

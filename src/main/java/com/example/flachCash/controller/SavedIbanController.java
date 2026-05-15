@@ -1,6 +1,7 @@
 package com.example.flachCash.controller;
 import com.example.flachCash.domain.SavedIban;
 import com.example.flachCash.domain.User;
+import com.example.flachCash.repository.SavedIbanRepository;
 import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class SavedIbanController {
 
     private final SavedIbanService savedIbanService;
     private final UserService userService;
+    private final SavedIbanRepository savedIbanRepository;
 
 
     @GetMapping("/addIban")
@@ -29,22 +31,42 @@ public class SavedIbanController {
     }
 
     @PostMapping("/addIban")
-    public String savedIban(@RequestParam String iban,
-                            @RequestParam String bankName,
-                            Authentication authentication,
-                            RedirectAttributes redirectAttributes) {
+    public String addIban(@RequestParam String iban,
+                          @RequestParam String bankName,
+                          Authentication authentication,
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
 
         String email = authentication.getName();
+
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        try {
-            savedIbanService.addIban(iban, bankName, user);
-            redirectAttributes.addFlashAttribute("success", "IBAN added successfully");
-        } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+
+        boolean exists = savedIbanRepository.existsByIbanAndUser_Id(iban, user.getId());
+
+        if (exists) {
+            redirectAttributes.addFlashAttribute("error", "IBAN already exists for this user");
+            return "redirect:/addIban";
         }
+
+
+        if (savedIbanRepository.countByUser_Id(user.getId()) >= 5) {
+            redirectAttributes.addFlashAttribute("error", "You have reached the maximum number of IBANs (5)");
+            return "redirect:/showIban";
+        }
+
+        SavedIban savedIban = SavedIban.builder()
+                .iban(iban)
+                .bankName(bankName)
+                .user(user)
+                .build();
+
+        savedIbanRepository.save(savedIban);
+        redirectAttributes.addFlashAttribute("success", "IBAN added successfully");
         return "redirect:/showIban";
     }
+
+
     @PostMapping("/deleteIban/{id}")
     public String deleteIban(@PathVariable Long id,
                              Authentication authentication,
@@ -63,10 +85,23 @@ public class SavedIbanController {
 
         return "redirect:/showIban";
     }
-    @GetMapping("/showIban/{id}")
-    public String showIban(@PathVariable Long id, Model model) {
 
-        model.addAttribute("ibanData", savedIbanService.findById(id));
+
+    @GetMapping("/showIban/{id}")
+    public String showIban(@PathVariable Long id,
+                           Authentication authentication,
+                           Model model) {
+
+        String email = authentication.getName();
+
+        User user = userService.findUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        SavedIban savedIban = savedIbanService
+                .findByIdAndUserId(id, user.getId())
+                .orElseThrow(() -> new RuntimeException("Unauthorized"));
+
+        model.addAttribute("ibanData", savedIban);
 
         return "modifyIban";
     }
@@ -79,18 +114,18 @@ public class SavedIbanController {
                              RedirectAttributes redirectAttributes) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         try {
-            savedIbanService.modifyIban(iban, bankName, user);
+            savedIbanService.modifyIban(id, iban, bankName, user);
+            redirectAttributes.addFlashAttribute("success", "IBAN modified");
+
+            return "redirect:/showIban";
 
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/showIban";
         }
-
-        return "redirect:/showIban";
     }
-
 }

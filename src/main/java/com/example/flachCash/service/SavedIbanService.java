@@ -15,59 +15,82 @@ public class SavedIbanService {
 
     private final SavedIbanRepository savedIbanRepository;
 
-    public SavedIban addIban(String iban, String bankName, User user){
-    {
-        // 1. vérifier si IBAN existe déjà pour cet user
-        boolean exists = savedIbanRepository.existsByIbanAndUserId(iban, user.getId());
+    public List<SavedIban> findAll(){
+        return savedIbanRepository.findAll();
+    }
+    //=====> ADD IBAN
+    public void addIban(String iban, String bankName, User user) {
+        // exist ?
+        boolean exists = savedIbanRepository. existsByIbanAndUser_Id(iban, user.getId());
 
         if (exists) {
             throw new RuntimeException("IBAN already exists for this user");
         }
-
-        // 2. sauvegarde si pas existant
-        SavedIban savedIban = SavedIban.builder()
-                .iban(iban)
-                .bankName(bankName)
-                .user(user)
-                .build();
-
-        return savedIbanRepository.save(savedIban);
-    }
-    }
-    public List<SavedIban> showIbans(Integer userId){
-        return savedIbanRepository.findByUserId(userId);
-    }
-
-
-    public void deleteIban(Long id, User user) {
-
-        SavedIban savedIban = savedIbanRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("IBAN not found"));
-
-        // sécurité : vérifier que l'IBAN appartient au user connecté
-        if (!savedIban.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("Unauthorized");
-        }
-
-        savedIbanRepository.delete(savedIban);
-    }
-
-    public void modifyIban(String iban, String bankName, User user){
-
+        if (findAll().size()<5) {
+            // save
             SavedIban savedIban = SavedIban.builder()
                     .iban(iban)
                     .bankName(bankName)
                     .user(user)
                     .build();
+            savedIbanRepository.save(savedIban);
+        }
 
-        savedIbanRepository.save(savedIban);
     }
 
+    //=====> SHOW IBAN
+    public List<SavedIban> showIbans(Integer userId) {
+        return savedIbanRepository.findByUser_Id(userId);
+    }
+
+    //=====> DELETE IBAN
+    public void deleteIban(Long id, User user) {
+
+        SavedIban savedIban = savedIbanRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("IBAN not found"));
+        //vérification que c'est bien un iban de l'utilisateur connecté
+        if (!savedIban.getUser().getId().equals(user.getId())) {
+            throw new SecurityException("Unauthorized");
+        }
+        //delete
+        savedIbanRepository.delete(savedIban);
+    }
+    //=====> MODIFY IBAN
+    public SavedIban modifyIban(Long id, String iban, String bankName, User user) {
+
+        SavedIban savedIban = savedIbanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("IBAN not found"));
+
+        if (!savedIban.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Unauthorized");
+        }
+        // vérifier doublon
+        boolean exists = savedIbanRepository
+                .existsByIbanAndUser_IdAndIdNot(
+                        iban,
+                        user.getId(),
+                        id
+                );
+
+        if (exists) {
+            throw new RuntimeException("IBAN already exists");
+        }
+
+        savedIban.setIban(iban);
+        savedIban.setBankName(bankName);
+
+        return savedIbanRepository.save(savedIban);
+    }
+
+    //=====> SAVE IBAN
     public Optional<SavedIban> findById(Long id) {
         return savedIbanRepository.findById(id);
     }
+    //=====> FIND IBAN
+    public Optional<SavedIban> findByIdAndUserId(Long id, Integer userId) {
+        return savedIbanRepository.findByIdAndUser_Id(id, userId);
+    }
 }
-
 
 
 

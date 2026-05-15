@@ -9,17 +9,19 @@
 
 </head>
 <body>
-<div class="content">
 <div th:replace="fragments/header :: header"></div>
 <div class="content">
 <div class="container d-flex justify-content-center">
     <div class="card p-4 shadow">
-
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <table class="table ">
-            <thead class="table-light">
+            <thead>
             <tr>
                 <th>Bank Name</th>
                 <th>IBan</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -43,9 +45,17 @@
                                 class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm">
                              Delete
                         </button>
-
                     </form>
 
+                </td>
+            </tr>
+            <tr>
+                <!--ADD-->
+                <td class="d-flex gap-2">
+                <a th:href="@{/addIban}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-player-play"></i>
+                    Add
+                </a>
                 </td>
             </tr>
             </tbody>

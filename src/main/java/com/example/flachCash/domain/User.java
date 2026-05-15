@@ -9,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userOwner")
     private List<Link> links;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -13,17 +13,18 @@
 
     <div class="container d-flex justify-content-center">
         <div class="card p-4 shadow">
-
-            <form th:action="@{/modifyIban/{id}(id=${ibanData.get().id})}" method="post">
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <form th:action="@{/modifyIban/{id}(id=${ibanData.id})}" method="post">
 
                 <input type="text"
                        name="bankName"
-                       th:value="${ibanData.get().bankName}"
+                       th:value="${ibanData.bankName}"
                        class="form-control mb-2">
 
                 <input type="text"
                        name="iban"
-                       th:value="${ibanData.get().iban}"
+                       th:value="${ibanData.iban}"
                        class="form-control mb-2">
 
                 <button type="submit" class="btn btn-success">

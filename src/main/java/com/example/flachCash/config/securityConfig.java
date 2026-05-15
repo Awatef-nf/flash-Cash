@@ -39,7 +39,7 @@ public class securityConfig {
             "/register",
             "/img/**",
             "/h2-console/**",
-            "/home"
+            "/aceuil"
     };
 
     //autorisation des vues
@@ -88,7 +88,6 @@ public class securityConfig {
             if (userRepository.findUserByEmail("user@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
                         .amount(0.0)
-                        .iban("")
                         .build();
                 User user = User.builder()
                         .firstName("user")
@@ -104,7 +103,6 @@ public class securityConfig {
             if (userRepository.findUserByEmail("admin@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
                         .amount(100.0)
-                        .iban("")
                         .build();
 
                 User admin = User.builder()

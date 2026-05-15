@@ -17,5 +17,6 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer accountId;
     private Double amount;
-    private String iban;
+
+
 }

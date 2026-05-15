@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -14,17 +14,30 @@
     <div class="container d-flex justify-content-center">
 
         <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
-            <form th:action="@{/addFriend}" method="get">
+            <form th:action="@{/addFriend}" method="post">
+
                 <div class="mb-3">
                     <label for="emailFriend"></label>
-                    <select id="emailFriend" name="friendEmail" class="form-select mb-2" required>
-                        <option value="">--Select Friend --</option>
 
-                        <option th:each="link : ${links}"
-                                th:value="${link.userFriend.account.iban}"
-                                th:text="${link.userFriend.account.iban}">
+                    <select id="emailFriend"
+                            name="friendEmail"
+                            class="form-select mb-2"
+                            required>
+
+                        <option value="">--Select Friend--</option>
+
+                        <option th:each="user : ${users}"
+                                th:value="${user.email}"
+                                th:text="${user.email}">
+                        </option>
+
                     </select>
                 </div>
+
+                <div class="d-grid">
+                    <input class="btn-start btn-sm" type="submit" value="Add">
+                </div>
+
             </form>
     </div>
 

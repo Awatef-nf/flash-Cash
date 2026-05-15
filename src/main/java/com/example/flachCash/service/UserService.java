@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.flachCash.domain.Role.USER;
@@ -18,13 +19,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User addUser(User user){
-        return userRepository.save(user);
-    }
 
     public Optional<User> findUserByEmail(String mail) {
         return userRepository.findUserByEmail(mail);
     }
+
     //enregister un utilisateur
     public void register(User user) {
         // Vérifie si email déjà pris
@@ -34,7 +33,6 @@ public class UserService {
 
         UserAccount account = UserAccount.builder()
                 .amount(0.0)
-                .iban("")
                 .build();
 
         User newUser = User.builder()
@@ -50,4 +48,10 @@ public class UserService {
     }
 
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    public Optional<User> findUserByEmailWithLinks(String email) {
+        return userRepository.findUserByEmailWithLinks(email);
+    }
 }
