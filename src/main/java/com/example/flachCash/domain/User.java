@@ -33,7 +33,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userOwner")
     private List<Link> links;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
     private UserAccount account;
 
     @Enumerated(EnumType.STRING)

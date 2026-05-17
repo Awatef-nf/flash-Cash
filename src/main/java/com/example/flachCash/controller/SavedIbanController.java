@@ -25,7 +25,9 @@ public class SavedIbanController {
 
     @GetMapping("/addIban")
     public String showAddIban(Authentication authentication, Model model) {
-        User user = (User) authentication.getPrincipal();
+        String email = authentication.getName();
+        User user = userService.findUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         model.addAttribute("user", user);
         return "addIban";
     }

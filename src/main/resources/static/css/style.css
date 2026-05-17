@@ -1,7 +1,8 @@
-* {
-    font-family: 'Poppins', sans-serif;
-}
 
+
+* {
+    font-family: "Quicksand", sans-serif;
+}
 
 header {
     background-color: white;
@@ -28,6 +29,7 @@ nav a:hover {
 .logo-header {
     margin-left: 3%;
 }
+
 .bg-column{
     background-color: blue;
     text-decoration-color: white;
@@ -171,6 +173,11 @@ body {
 body {
     background-color: #f7f9fc;
 }
+
 a{
     color: black;
+}
+h2{
+    font-family: 'Quicksand', sans-serif;
+    font-weight: bold;
 }

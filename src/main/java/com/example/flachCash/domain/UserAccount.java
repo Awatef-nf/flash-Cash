@@ -15,8 +15,11 @@ public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private Integer accountId;
     private Double amount;
-
+    //l'autre coté
+    @OneToOne(mappedBy = "account")
+    private User user;
 
 }

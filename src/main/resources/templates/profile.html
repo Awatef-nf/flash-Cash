@@ -4,19 +4,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Header</title>
+    <title>Profile</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 <body>
 <!---------------------------------------------HEADER-->
 <div th:replace="fragments/header :: header"></div>
 <!--------------------------------------------MY PROFILE-->
-<div class="card p-4 shadow" id="my-profile">
+<div class="card p-4 shadow">
     <div class="my-profile">
-        <h2><span th:text="${user.firstName}"></span>
-        <span th:text="${user.lastName}"></span>
+        <h2>
+            <span th:text="${user.firstName != null ? #strings.capitalize(user.firstName) : ''}"></span>
+            <span th:text="${user.lastName != null ? #strings.capitalize(user.lastName) : ''}"></span>
         </h2>
     </div>
 
@@ -51,7 +53,7 @@
         <p class="text-center ">Worldwide</p>
         <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/transfer}" method="get">
+        <form  class="btn-sm" th:action="@{/internTransfer}" method="get">
             <div class="d-grid">
                 <input class="btn btn-primary btn-sm" type="submit" value="Start">
             </div>
@@ -86,11 +88,10 @@
     </div>
     </div>
     </div>
+                    <!--    Account-->
     <div class="my-profile">
         <h2> My account Balance</h2>
-
-        <div class="container mt-5">
-
+        <div class="container mt-3">
             <table class="table table-hover text-center">
                 <thead class="table-light">
                 <tr>
@@ -101,7 +102,13 @@
                 <tbody>
                 <tr>
                     <td th:text="${user.email}">email</td>
-                    <td th:text="${user.account.amount}"></td>
+                    <td th:text="${user.account != null ? user.account.amount : 0}"></td>
+
+                </tr>
+                <tr th:each="transfer : ${transfs}">
+                    <td th:text="${transfer.receiverAccount}"></td>
+                    <td th:text="${transfer.accountBeforeFee}"></td>
+                    <td th:text="${transfer.accountAfterFee}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -109,7 +116,8 @@
         </div>
     </div>
 </div>
-<!----------------------------------------------FOOTER-->
+
+<!------------FOOTER-->
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

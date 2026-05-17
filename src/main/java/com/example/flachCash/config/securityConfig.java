@@ -35,11 +35,10 @@ public class securityConfig {
     private static final String[] AUTH_WHITELIST ={
             "/css/**",
             "/js/**",
-            "/login",
             "/register",
             "/img/**",
             "/h2-console/**",
-            "/aceuil"
+            "/home"
     };
 
     //autorisation des vues
@@ -63,7 +62,7 @@ public class securityConfig {
                 // on peut rajouter oa
                 .formLogin( //configuration de l'authentification et de la redirection
                         form ->form
-                                .loginPage("/login")
+                                .loginPage("/home")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/profile",true)

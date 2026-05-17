@@ -16,7 +16,8 @@
 
         <p class="text-center">Instant transfer to your Bank</p>
 
-        <form th:action="@{/addCash}" method="get">
+        <form th:action="@{/addCash}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="mb-3">
                 <label for="iban"></label>
                 <select id="iban" name="iban" class="form-select mb-2" required>
@@ -27,7 +28,7 @@
                             th:text="${saved.bankName + ' - ' + saved.iban}">
                     </option>
                 </select>
-                <input type="text" id="Amount" name="Amount" class="form-control" placeholder="Amount €" >
+                <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" >
             </div>
             <div class="d-grid">
                 <input class="btn-start btn-sm" type="submit" value="Transfer">

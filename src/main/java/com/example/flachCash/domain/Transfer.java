@@ -12,10 +12,13 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     private LocalDateTime date;
+
     @ManyToOne
-    private User from;
+    private UserAccount senderAccount;
+
     @ManyToOne
-    private User to;
+    private UserAccount receiverAccount;
+
     private Double accountBeforeFee;
     private Double accountAfterFee;
 

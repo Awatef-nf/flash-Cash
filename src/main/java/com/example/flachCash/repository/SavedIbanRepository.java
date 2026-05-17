@@ -19,4 +19,6 @@ public interface SavedIbanRepository extends JpaRepository<SavedIban, Long> {
     Optional<SavedIban> findByIdAndUser_Id(Long id, Integer userId);
 
     int countByUser_Id(Integer id);
+
+    boolean existsByIban(String iban);
 }

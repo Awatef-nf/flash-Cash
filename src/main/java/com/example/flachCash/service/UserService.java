@@ -44,6 +44,7 @@ public class UserService {
                 .account(account)
                 .build();
 
+        account.setUser(newUser);
         userRepository.save(newUser);
     }
 
@@ -53,5 +54,10 @@ public class UserService {
     }
     public Optional<User> findUserByEmailWithLinks(String email) {
         return userRepository.findUserByEmailWithLinks(email);
+    }
+
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }

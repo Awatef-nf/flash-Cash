@@ -3,8 +3,10 @@ package com.example.flachCash.controller;
 
 import com.example.flachCash.domain.Link;
 import com.example.flachCash.domain.SavedIban;
+import com.example.flachCash.domain.Transfer;
 import com.example.flachCash.domain.User;
 import com.example.flachCash.service.SavedIbanService;
+import com.example.flachCash.service.TransferService;
 import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.flachCash.domain.Role.USER;
 
@@ -27,6 +30,32 @@ public class UserController {
 
     private final UserService userService;
     private final SavedIbanService savedIbanService;
+    private final TransferService transferService;
+
+    @GetMapping("/profile")
+    public String showProfile(Authentication authentication, Model model) {
+
+        String email = authentication.getName();
+        Optional<User> optionalUser = userService.findByEmail(email);
+
+        // vérifier d'abord
+        if (optionalUser.isEmpty()) {
+            return "redirect:/home";
+        }
+
+        // unwrap ensuite
+        User user = optionalUser.get();
+
+        // utiliser après
+        List<Transfer> transfs = transferService.findByUser(user);
+
+        model.addAttribute("user", user);
+        model.addAttribute("transfs", transfs);
+
+        return "profile";
+
+    }
+
 
     @GetMapping("/register")
     public String showForm(Model model) {
@@ -34,7 +63,6 @@ public class UserController {
         model.addAttribute("role", USER);
         return "register";
     }
-
 
     @PostMapping("/register")
     public String signUp(@ModelAttribute("user") User user, Model model) {
@@ -47,26 +75,6 @@ public class UserController {
             return "register";
         }
     }
-
-    @GetMapping("/profile")
-    public String showProfile(Authentication authentication, Model model) {
-        User user = (User) authentication.getPrincipal();
-        model.addAttribute("user", user);
-        return "profile";
-    }
-
-    @GetMapping("/transfer")
-    public String showTransfer(Authentication authentication,Model model) {
-        User user = (User) authentication.getPrincipal();
-        model.addAttribute("user", user);
-        return "transfer";
-    }
-
-    @PostMapping("/transfer")
-    public String transfer() {
-        return "redirect: profile";
-    }
-
 
 
     @GetMapping("/showIban")
