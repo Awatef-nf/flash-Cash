@@ -1,5 +1,6 @@
 package com.example.flachCash.controller;
 
+import com.example.flachCash.domain.Role;
 import com.example.flachCash.domain.SavedIban;
 import com.example.flachCash.domain.User;
 import com.example.flachCash.repository.TransferRepository;
@@ -24,22 +25,27 @@ import java.util.List;
 public class TransferController {
 
     private final TransferService transferService;
+    private final UserAccountService userAccountService;
 
     @GetMapping("/transfer")
-    public String showTransferPage() {
-        return "transfer"; // transfer.html
-    }
+    public String showTransferPage(Model model) {
 
+        User currentUser = userAccountService.getCurrentUser();
+        model.addAttribute("user", currentUser);
+        model.addAttribute("accounts", transferService.findAllExceptCurrentUserAndAdmin(currentUser.getEmail(), Role.ADMIN));
+
+        return "transfer";
+    }
     @PostMapping("/transfer")
     public String transferMoney(@RequestParam String receiverEmail,
                                 @RequestParam Double amount,
-                                RedirectAttributes redirectAttributes) { // ✅ ajoute ça
+                                RedirectAttributes redirectAttributes) {
         try {
-            transferService.transferMoney(receiverEmail, amount); // ligne 38
+            transferService.transferMoney(receiverEmail, amount);
             redirectAttributes.addFlashAttribute("success", "Virement effectué !");
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage()); // ✅ catch l'exception
-            return "redirect:/transfer"; // ✅ redirige proprement
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/transfer";
         }
         return "redirect:/profile";
     }

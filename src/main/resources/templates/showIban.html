@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title>Profile</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 <body>
@@ -25,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="iban : ${ibans}">
+            <tr th:each="iban : ${ibanList}">
                 <td th:text="${iban.bankName}"></td>
                 <td th:text="${iban.iban}"></td>
                 <td class="d-flex gap-2">

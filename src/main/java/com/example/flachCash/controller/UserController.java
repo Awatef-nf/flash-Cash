@@ -38,19 +38,16 @@ public class UserController {
         String email = authentication.getName();
         Optional<User> optionalUser = userService.findByEmail(email);
 
-        // vérifier d'abord
         if (optionalUser.isEmpty()) {
-            return "redirect:/home";
+            return "redirect:/login";
         }
 
-        // unwrap ensuite
+        // recuperate the connected user
         User user = optionalUser.get();
-
-        // utiliser après
-        List<Transfer> transfs = transferService.findByUser(user);
+        List<Transfer> transfers = transferService.findByUser(user);
 
         model.addAttribute("user", user);
-        model.addAttribute("transfs", transfs);
+        model.addAttribute("transfers", transfers);
 
         return "profile";
 
@@ -70,22 +67,22 @@ public class UserController {
             userService.register(user);
             return "redirect:/login";
         } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage()); //  "Email déjà utilisé"
-            model.addAttribute("user", user); //  garde les champs remplis
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("user", user);
             return "register";
         }
     }
 
 
     @GetMapping("/showIban")
-    public String showIbans(Authentication authentication, Model model) {
+    public String showIbanList(Authentication authentication, Model model) {
 
         String email = authentication.getName();
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<SavedIban> ibans = savedIbanService.showIbans(user.getId());
-        model.addAttribute("ibans", ibans);
+        List<SavedIban> ibanList = savedIbanService.showIbans(user.getId());
+        model.addAttribute("ibanList", ibanList);
 
         return "showIban";
     }

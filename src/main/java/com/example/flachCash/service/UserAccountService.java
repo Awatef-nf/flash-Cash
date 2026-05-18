@@ -21,60 +21,53 @@ public class UserAccountService {
     public void addCash(String iban, Double amount) {
 
         if (amount == null || amount <= 0) {
-            throw new RuntimeException("Montant invalide");
+            throw new RuntimeException("Invalid amount");
         }
 
         if (!savedIbanRepository.existsByIban(iban)) {
-            throw new RuntimeException("IBAN non autorisé");
+            throw new RuntimeException("IBAN not authorized");
         }
 
         User user = getCurrentUser();
-
         UserAccount account = user.getAccount();
 
-        // 🔥 IMPORTANT : protection contre ton bug actuel
         if (account == null) {
-            throw new RuntimeException("Compte utilisateur introuvable");
+            throw new RuntimeException("User Account not found");
         }
 
-        account.setAmount(account.getAmount() + amount);
-
+        account.setBalance(account.getBalance() + amount);
         userAccountRepository.save(account);
     }
 
 
-
-    public void internTransfer(String iban, Double amount) {
+    public void personalTransfer(String iban, Double amount) {
 
         if (amount == null || amount <= 0) {
-            throw new RuntimeException("Montant invalide");
+            throw new RuntimeException("Invalid amount");
         }
 
         if (!savedIbanRepository.existsByIban(iban)) {
-            throw new RuntimeException("IBAN non autorisé");
+            throw new RuntimeException("IBAN not authorized");
         }
 
         User user = getCurrentUser();
-
         UserAccount account = user.getAccount();
 
-        // 🔥 IMPORTANT : protection contre ton bug actuel
         if (account == null) {
-            throw new RuntimeException("Compte utilisateur introuvable");
+            throw new RuntimeException("User Account not found");
 
         }
-        if (amount > account.getAmount()) {
-            throw new RuntimeException("Solde insuffisant");
+        if (amount > account.getBalance()) {
+            throw new RuntimeException("Insufficient balance");
         }
-        account.setAmount(account.getAmount() - amount);
 
-
+        account.setBalance(account.getBalance() - amount);
         userAccountRepository.save(account);
     }
 
 
 //==========================================================================================================
-//  RECUPERER L USER CONNECTE
+//  recuperate User Connected !!!
 
     public User getCurrentUser() {
 

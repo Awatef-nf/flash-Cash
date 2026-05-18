@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:HH="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -53,7 +54,7 @@
         <p class="text-center ">Worldwide</p>
         <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/internTransfer}" method="get">
+        <form  class="btn-sm" th:action="@{/personalTransfer}" method="get">
             <div class="d-grid">
                 <input class="btn btn-primary btn-sm" type="submit" value="Start">
             </div>
@@ -102,13 +103,26 @@
                 <tbody>
                 <tr>
                     <td th:text="${user.email}">email</td>
-                    <td th:text="${user.account != null ? user.account.amount : 0}"></td>
-
+                    <td th:text="${user.account != null ? user.account.balance : 0}"></td>
                 </tr>
-                <tr th:each="transfer : ${transfs}">
-                    <td th:text="${transfer.receiverAccount}"></td>
-                    <td th:text="${transfer.accountBeforeFee}"></td>
-                    <td th:text="${transfer.accountAfterFee}"></td>
+                </tbody>
+            </table>
+
+            <table class="table table-hover text-center">
+                <thead class="table-light">
+                <tr>
+                    <th>UserReceiver</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="transfer : ${transfers}">
+                    <td th:text="${transfer.receiverAccount.user.email}"></td>
+
+                    <td th:text="${#temporals.format(transfer.date, 'dd/MM/yyyy HH:mm')}"></td>
+
+                    <td th:text="${transfer.amountBeforeFee}"></td>
                 </tr>
                 </tbody>
             </table>

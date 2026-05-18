@@ -29,40 +29,35 @@ public class securityConfig {
 
     private final UserRepository userRepository;
     //Add FilterChain
-    //Pour configuration H2 il faut voir methode2 et methodeH2
+    //to configure H2 see project spring-security method2
 
-    //definition des lien à authoriszer
+    //list of vue authorized
     private static final String[] AUTH_WHITELIST ={
             "/css/**",
             "/js/**",
             "/register",
             "/img/**",
             "/h2-console/**",
-            "/home"
+            "/home",
+            "/login"
     };
 
-    //autorisation des vues
+    //Authorisation of vue
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**") // ignor cette endpoint te l'exclu de la sécutité
-                )
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-                )
+                //Permission of the http or else  → white blank or 403
                 .authorizeHttpRequests(req -> req
-                        //Sans ça, Spring Security intercepte le FORWARD et demande une auth → page blanche ou 403
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll() // ✅ en 1er
+                        //authorization forward( intern redirection) and error (request of error vue)(404 ET 500)
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/profile/**", "/transaction/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
-                // on peut rajouter oa
-                .formLogin( //configuration de l'authentification et de la redirection
+                .formLogin(
                         form ->form
-                                .loginPage("/home")
+                                .loginPage("/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/profile",true)
@@ -77,8 +72,7 @@ public class securityConfig {
     }
 
 
-
-    //creaction des users
+    //Creation of USER
     @Bean
     public CommandLineRunner initDatabase(){
         return args -> {
@@ -86,7 +80,7 @@ public class securityConfig {
 
             if (userRepository.findUserByEmail("user@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
-                        .amount(0.0)
+                        .balance(0.0)
                         .build();
                 User user = User.builder()
                         .firstName("user")
@@ -101,7 +95,7 @@ public class securityConfig {
 
             if (userRepository.findUserByEmail("admin@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
-                        .amount(100.0)
+                        .balance(100.0)
                         .build();
 
                 User admin = User.builder()
@@ -124,10 +118,8 @@ public class securityConfig {
     public UserDetailsService userDetailsService(){
         return username -> userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email" +username+ " not found"));
-
-
     }
-
+    //Encryption of password
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

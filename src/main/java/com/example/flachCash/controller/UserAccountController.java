@@ -49,38 +49,35 @@ public class UserAccountController {
     ) {
 
         userAccountService.addCash(iban, amount);
-
         return "redirect:/profile";
     }
 
-    @GetMapping("/internTransfer")
-    public String showInternTransferPage(Model model, Authentication authentication) {
+    @GetMapping("/personalTransfer")
+    public String showPersonalTransferPage(Model model, Authentication authentication) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<SavedIban> savedIbans = savedIbanService.showIbans(user.getId());
-
         model.addAttribute("savedIbans", savedIbans);
 
-        return "internTransfer";
+        return "personalTransfer";
     }
 
 
-    @PostMapping("/internTransfer")
-    public String internTransfer(
+    @PostMapping("/personalTransfer")
+    public String personalTransfer(
             @RequestParam String iban,
             @RequestParam Double amount,
             RedirectAttributes redirectAttributes) {
         try {
 
-            userAccountService.internTransfer(iban, amount);
+            userAccountService.personalTransfer(iban, amount);
             redirectAttributes.addFlashAttribute("success", "Virement effectué !");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/internTransfer";
+            return "redirect:/personalTransfer";
         }
         return "redirect:/profile";
     }

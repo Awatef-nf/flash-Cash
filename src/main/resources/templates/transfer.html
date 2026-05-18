@@ -2,16 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-<div class="content">
 <div th:replace="fragments/header :: header"></div>
-
-
+<div class="content">
 <div class="container d-flex justify-content-center">
 
     <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
@@ -21,7 +19,18 @@
 
         <form th:action="@{/transfer}" method="post">
             <div class="mb-3">
-                <input type="text" id="receiverEmail" name="receiverEmail" class="form-control mb-2" placeholder="user@gmail.com" required>
+                <select name="receiverEmail"
+                        class="form-control mb-2"
+                        required>
+
+                    <option value="">Choose receiver</option>
+
+                    <option th:each="account : ${accounts}"
+                            th:value="${account.user.email}"
+                            th:text="${account.user.email}">
+                    </option>
+
+                </select>
                 <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" >
             </div>
             <div class="d-grid">

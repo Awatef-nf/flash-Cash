@@ -54,10 +54,11 @@ public class LinkController {
 
         List<User> users = userService.findAll()
                 .stream()
-                .filter(u -> !u.getEmail().equals(currentUser.getEmail())) //userconecter est exclu
-                .filter(u -> u.getRole() != Role.ADMIN)//exclu admin
+                //exclude of the connected user
+                .filter(u -> !u.getEmail().equals(currentUser.getEmail()))
+                //exclude admin
+                .filter(u -> u.getRole() != Role.ADMIN)
                 .toList();
-
         model.addAttribute("users", users);
 
         return "addFriend";
@@ -70,14 +71,13 @@ public class LinkController {
                             Authentication authentication) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         User friend = userService.findUserByEmail(friendEmail)
                 .orElseThrow(() -> new RuntimeException("Friend not found"));
 
-        //  Vérification si le lien existe déjà
+        // link exist ?
         boolean exists = linkRepository.existsByUserOwnerAndUserFriend(user, friend);
 
         if (exists) {
@@ -85,11 +85,11 @@ public class LinkController {
             model.addAttribute("user", user);
             return "link";
         }
-
+        //create the link
         Link link = new Link();
         link.setUserOwner(user);
         link.setUserFriend(friend);
-
+        //saved it
         linkService.addLink(link);
 
         return "redirect:/link";
@@ -101,12 +101,11 @@ public class LinkController {
                              RedirectAttributes redirectAttributes) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         try {
-            // IMPORTANT : supprimer le link avec son ID
+            // delete with linkId
             linkService.deleteLink(id,user);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

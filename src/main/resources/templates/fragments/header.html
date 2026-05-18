@@ -2,46 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>header</title>
+    <title>Profile</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 <body>
-<div th:fragment="header">
+    <div th:fragment="header">
 
-<div class="d-flex align-items-center mt-2 ">
-    <!-- Logo à gauche -->
-    <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center mb-4 "
-         style="width:70px;height:70px; margin-left: 10%">
-        <i class="bi bi-wallet2 fs-1"></i>
+    <div class="d-flex align-items-center mt-2 px-4">
+
+        <!-- LOGO -->
+        <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center"
+             style="width:70px;height:70px;">
+            <i class="bi bi-wallet2 fs-1"></i>
+        </div>
+
+        <!-- TITLE -->
+        <div class="ms-3">
+            <h1 class="fw-bold text-primary mb-0">
+                FlashCash
+            </h1>
+            <p class="tagline mb-0">Fast and secure transfers</p>
+        </div>
+
+        <!-- NAV -->
+        <nav class="d-flex gap-4 ms-auto align-items-center">
+
+            <a class="text-decoration-none" th:href="@{/home}">
+                <i class="bi bi-house"></i> Home
+            </a>
+
+            <a class="text-decoration-none" th:href="@{/transfer}">
+                <i class="bi bi-arrow-left-right"></i> Transfer
+            </a>
+
+            <a class="text-decoration-none" th:href="@{/profile}">
+                <i class="bi bi-person"></i> Profile
+            </a>
+
+            <a class="text-decoration-none" th:href="@{/link}">
+                <i class="bi bi-envelope"></i> Contact
+            </a>
+
+            <!-- USER -->
+            <span class="fw-bold text-dark ms-3">
+            <i class="bi bi-person-circle"></i>
+           <span th:text="${user != null ? #strings.capitalize(user.firstName) : ''}"></span>
+           <span th:text="${user != null ? #strings.capitalize(user.lastName) : ''}"></span>
+        </span>
+
+            <!-- LOGOUT -->
+            <a class="text-decoration-none text-danger d-flex align-items-center gap-1"
+               href="#"
+               onclick="document.getElementById('logout-form').submit()">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </a>
+
+            <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
+
+        </nav>
+
     </div>
 
-    <!-- TITLE -->
-    <div class="ms-3">
-        <h1 class="fw-bold text-primary mb-0 mt-4">
-            FlashCash
-        </h1>
-        <p class="tagline">Fast and secure transfers</p>
-    </div>
-
-    <!-- Liens à droite -->
-    <nav class="d-flex gap-4 ms-auto" style="margin-top: -1%">
-        <a class="text-decoration-none " th:href="@{/home}">Home</a>
-        <a class="text-decoration-none " th:href="@{/transfer}">Transfer</a>
-        <a class="text-decoration-none " th:href="@{/profile}">Profile</a>
-        <a class="text-decoration-none " th:href="@{/link}">Contact</a>
-
-        <a class="text-decoration-none"
-           href="#"
-           onclick="document.getElementById('logout-form').submit()">
-            Logout
-        </a>
-        <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
-    </nav>
-
-</div>
 </div>
 </body>
 </html>

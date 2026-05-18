@@ -28,7 +28,6 @@ public class LinkService {
         if (!link.getUserOwner().getId().equals(currentUser.getId())) {
             throw new RuntimeException("Unauthorized");
         }
-
         linkRepository.delete(link);
     }
 

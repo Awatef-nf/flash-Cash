@@ -24,17 +24,15 @@ public class UserService {
         return userRepository.findUserByEmail(mail);
     }
 
-    //enregister un utilisateur
     public void register(User user) {
-        // Vérifie si email déjà pris
+        // email is already used?
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email déjà utilisé");
+            throw new IllegalArgumentException("Email already in use");
         }
 
         UserAccount account = UserAccount.builder()
-                .amount(0.0)
+                .balance(0.0)
                 .build();
-
         User newUser = User.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -52,10 +50,10 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
     public Optional<User> findUserByEmailWithLinks(String email) {
         return userRepository.findUserByEmailWithLinks(email);
     }
-
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findUserByEmail(email);

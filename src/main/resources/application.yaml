@@ -19,6 +19,9 @@ spring:
     thymeleaf:
         cache: false
 
+    mvc:
+        format:
+            date-time: dd/MM/yyyy HH:mm
 logging:
     level:
         org:

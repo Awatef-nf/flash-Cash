@@ -24,7 +24,9 @@ public class SavedIbanController {
 
 
     @GetMapping("/addIban")
-    public String showAddIban(Authentication authentication, Model model) {
+    public String showAddIban(Authentication authentication,
+                              Model model) {
+
         String email = authentication.getName();
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -36,38 +38,22 @@ public class SavedIbanController {
     public String addIban(@RequestParam String iban,
                           @RequestParam String bankName,
                           Authentication authentication,
-                          Model model,
                           RedirectAttributes redirectAttributes) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        boolean exists = savedIbanRepository.existsByIbanAndUser_Id(iban, user.getId());
+        try {
+            savedIbanService.addIban(iban, bankName, user);
+            redirectAttributes.addFlashAttribute("success", "IBAN added successfully");
 
-        if (exists) {
-            redirectAttributes.addFlashAttribute("error", "IBAN already exists for this user");
-            return "redirect:/addIban";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
 
-
-        if (savedIbanRepository.countByUser_Id(user.getId()) >= 5) {
-            redirectAttributes.addFlashAttribute("error", "You have reached the maximum number of IBANs (5)");
-            return "redirect:/showIban";
-        }
-
-        SavedIban savedIban = SavedIban.builder()
-                .iban(iban)
-                .bankName(bankName)
-                .user(user)
-                .build();
-
-        savedIbanRepository.save(savedIban);
-        redirectAttributes.addFlashAttribute("success", "IBAN added successfully");
         return "redirect:/showIban";
     }
-
 
     @PostMapping("/deleteIban/{id}")
     public String deleteIban(@PathVariable Long id,
@@ -75,7 +61,6 @@ public class SavedIbanController {
                              RedirectAttributes redirectAttributes) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -95,7 +80,6 @@ public class SavedIbanController {
                            Model model) {
 
         String email = authentication.getName();
-
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -104,7 +88,6 @@ public class SavedIbanController {
                 .orElseThrow(() -> new RuntimeException("Unauthorized"));
 
         model.addAttribute("ibanData", savedIban);
-
         return "modifyIban";
     }
 

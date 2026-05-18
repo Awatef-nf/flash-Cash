@@ -10,8 +10,6 @@ import java.util.Optional;
 @Repository
 public interface SavedIbanRepository extends JpaRepository<SavedIban, Long> {
 
-    boolean existsByIbanAndUser_Id(String iban, Integer userId);
-
     boolean existsByIbanAndUser_IdAndIdNot(String iban, Integer userId, Long id);
 
     List<SavedIban> findByUser_Id(Integer userId);

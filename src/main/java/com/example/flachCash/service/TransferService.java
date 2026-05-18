@@ -1,5 +1,6 @@
 package com.example.flachCash.service;
 
+import com.example.flachCash.domain.Role;
 import com.example.flachCash.domain.Transfer;
 import com.example.flachCash.domain.User;
 import com.example.flachCash.domain.UserAccount;
@@ -19,67 +20,61 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TransferService {
 
+    private final UserAccountService userAccountService;
     private UserAccountRepository userAccountRepository;
     private final TransferRepository transferRepository;
-
-
-   
 
     @Transactional
     public void transferMoney(String receiverEmail,
                               Double amount) {
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        String senderEmail = authentication.getName();
-
-        // compte sender
+        String senderEmail = userAccountService.getCurrentUser().getEmail();
+        // sender account
         UserAccount senderAccount = (UserAccount) userAccountRepository
                         .findByUserEmail(senderEmail)
                         .orElseThrow(() ->
                                 new RuntimeException("Sender not found"));
 
-        // compte receiver
+        // receiver account
         UserAccount receiverAccount = (UserAccount) userAccountRepository
                         .findByUserEmail(receiverEmail).orElseThrow(() ->
                                 new RuntimeException("Receiver not found"));
 
-        // validation montant
+        // amount validation
         if (amount == null || amount <= 0) {
             throw new RuntimeException("Invalid amount");
         }
 
-        // empêcher transfert à soi-même
-        if (senderEmail.equals(receiverEmail)) {
+        // diable to sender to the owner
+        if (senderAccount.getAccountId().equals(receiverAccount.getAccountId())) {
             throw new RuntimeException("Cannot transfer to yourself");
         }
 
-        // vérifier solde
-        if (senderAccount.getAmount() < amount) {
+        // balance verification
+        if (senderAccount.getBalance() < amount) {
             throw new RuntimeException("Insufficient balance");
         }
 
-        // frais
+        // fee of transfer
         double fee = amount * 0.05;
 
         double amountAfterFee = amount - fee;
 
-        // retirer argent sender
-        senderAccount.setAmount(
-                senderAccount.getAmount() - amount
+        // remove amount from sender account
+        senderAccount.setBalance(
+                senderAccount.getBalance() - amount
         );
 
-        // ajouter argent receiver
-        receiverAccount.setAmount(
-                receiverAccount.getAmount() + amountAfterFee
+        // add amount to receiver account
+        receiverAccount.setBalance(
+                receiverAccount.getBalance() + amountAfterFee
         );
 
         // save
         userAccountRepository.save(senderAccount);
         userAccountRepository.save(receiverAccount);
 
-        // historique
+        // historical
         Transfer transfer = new Transfer();
 
         transfer.setDate(LocalDateTime.now());
@@ -88,19 +83,25 @@ public class TransferService {
 
         transfer.setReceiverAccount(receiverAccount);
 
-        transfer.setAccountBeforeFee(amount);
+        transfer.setAmountBeforeFee(amount);
 
-        transfer.setAccountAfterFee(amountAfterFee);
+        transfer.setAmountAfterFee(amountAfterFee);
 
         transferRepository.save(transfer);
     }
 
 
-    public List<Transfer> findAll() {
-       return transferRepository.findAll();
+    public List<Transfer> findByUser(User user) {
+        UserAccount account = user.getAccount();
+        return transferRepository.findBySenderAccountOrReceiverAccount(
+                account,
+                account
+        );
     }
 
-
+    public Object findAllExceptCurrentUserAndAdmin(String email, Role role) {
+        return userAccountRepository.findByUserEmailNotAndUserRoleNot(email,role);
+    }
 }
 
 
