@@ -6,32 +6,34 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="content">
-<div class="container d-flex justify-content-center">
-
-    <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+<div class="container d-flex justify-content-center" style="margin: 7%;">
+    <div class="card p-4 shadow" style="width: 450px;">
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <p class="text-center">Instant transfer</p>
-
         <form th:action="@{/transfer}" method="post">
             <div class="mb-3">
-                <select name="receiverEmail"
-                        class="form-control mb-2"
-                        required>
+                <label for="receiverEmail"></label>
+                    <select id="receiverEmail"
+                            name="receiverEmail"
+                            class="form-control mb-2"
+                            required>
 
-                    <option value="">Choose receiver</option>
+                        <option value=""></option>
+                        <option th:each="account : ${accounts}"
+                                th:value="${account.user.email}"
+                                th:text="${account.user.email}">
+                        </option>
 
-                    <option th:each="account : ${accounts}"
-                            th:value="${account.user.email}"
-                            th:text="${account.user.email}">
-                    </option>
-
-                </select>
-                <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" >
+                    </select>
+                <label for="amount"></label>
+                <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" required>
             </div>
             <div class="d-grid">
                 <input class="btn-start btn-sm" type="submit" value="Transfer">
@@ -42,5 +44,12 @@
 </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script>
+    new TomSelect('#receiverEmail', {
+        placeholder: 'Search a friend...',
+        allowEmptyOption: true,
+        items:[]
+    });
+</script>
 </body>
 </html>

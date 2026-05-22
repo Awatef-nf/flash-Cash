@@ -2,6 +2,7 @@ package com.example.flachCash.service;
 
 import com.example.flachCash.domain.User;
 import com.example.flachCash.domain.UserAccount;
+import com.example.flachCash.dto.RegisterDto;
 import com.example.flachCash.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,27 +25,36 @@ public class UserService {
         return userRepository.findUserByEmail(mail);
     }
 
-    public void register(User user) {
-        // email is already used?
-        if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+    public void register(RegisterDto dto) {
+
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
+
+        if (userRepository.findUserByEmail(dto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already in use");
         }
 
         UserAccount account = UserAccount.builder()
                 .balance(0.0)
                 .build();
-        User newUser = User.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .role(USER)
-                .account(account)
-                .build();
 
-        account.setUser(newUser);
-        userRepository.save(newUser);
+        User user = new User();
+
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+
+        // encode AFTER validation
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        user.setRole(USER);
+        user.setAccount(account);
+        account.setUser(user);
+
+        userRepository.save(user);
     }
+
 
 
     public List<User> findAll() {

@@ -16,7 +16,7 @@
         <!-- LOGO -->
         <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center"
              style="width:70px;height:70px;">
-            <i class="bi bi-wallet2 fs-1"></i>
+            <i class="bi bi-wallet2 " style="font-size: 200%"></i>
         </div>
 
         <!-- TITLE -->
@@ -30,31 +30,31 @@
         <!-- NAV -->
         <nav class="d-flex gap-4 ms-auto align-items-center">
 
-            <a class="text-decoration-none" th:href="@{/home}">
+            <a class="d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav bg-clr " th:href="@{/home-profile}">
                 <i class="bi bi-house"></i> Home
             </a>
 
-            <a class="text-decoration-none" th:href="@{/transfer}">
+            <a class=" d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav" th:href="@{/transfer}">
                 <i class="bi bi-arrow-left-right"></i> Transfer
             </a>
 
-            <a class="text-decoration-none" th:href="@{/profile}">
-                <i class="bi bi-person"></i> Profile
+            <a class="d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav" th:href="@{/profile}">
+                <i class="bi bi-wallet"></i> Wallet
             </a>
 
-            <a class="text-decoration-none" th:href="@{/link}">
+            <a class="d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav" th:href="@{/link}">
                 <i class="bi bi-envelope"></i> Contact
             </a>
 
             <!-- USER -->
-            <span class="fw-bold text-dark ms-3">
+            <span class="d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav">
             <i class="bi bi-person-circle"></i>
            <span th:text="${user != null ? #strings.capitalize(user.firstName) : ''}"></span>
            <span th:text="${user != null ? #strings.capitalize(user.lastName) : ''}"></span>
         </span>
 
             <!-- LOGOUT -->
-            <a class="text-decoration-none text-danger d-flex align-items-center gap-1"
+            <a  class="d-flex gap-2 btn btn-primary btn-lg rounded-5 btn-nav"
                href="#"
                onclick="document.getElementById('logout-form').submit()">
 

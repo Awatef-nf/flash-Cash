@@ -11,34 +11,46 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="content">
-<div class="container d-flex justify-content-center">
-    <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+    <div class="container d-flex justify-content-center" style="margin: 7%;">
+
+        <div class="card p-4 shadow" style="width: 450px;">
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <p class="text-center">Add Iban </p>
 
-        <form th:action="@{/addIban}" method="post">
-            <div class="mb-3">
-                <input type="text"
-                       name="bankName"
-                       class="form-control mb-2"
-                       placeholder="Bank Name"
-                       required>
+            <form th:action="@{/addIban}" th:object="${savedIban}" method="post">
 
-                <input type="text"
-                       name="iban"
-                       class="form-control mb-2"
-                       placeholder="FR76...."
-                       pattern="[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}"
-                       title="Format IBAN invalid"
-                       required>
+                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
 
-            </div>
-            <div class="d-grid">
-                <input class="btn-start btn-sm" type="submit" value="Add">
-            </div>
+                <div class="mb-3">
 
-        </form>
+                    <input type="text"
+                           th:field="*{bankName}"
+                           class="form-control mb-2"
+                           placeholder="Bank Name">
+
+                    <div th:if="${#fields.hasErrors('bankName')}"
+                         th:errors="*{bankName}"
+                         class="text-danger"></div>
+
+                    <input type="text"
+                           th:field="*{iban}"
+                           class="form-control mb-2"
+                           placeholder="FR76....">
+
+                    <div th:if="${#fields.hasErrors('iban')}"
+                         th:errors="*{iban}"
+                         class="text-danger"></div>
+
+                </div>
+
+                <div class="d-grid">
+                    <input class="btn-start btn-sm" type="submit" value="Add">
+                </div>
+
+            </form>
 
     </div>
 </div>

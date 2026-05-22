@@ -5,7 +5,7 @@
 }
 
 header {
-    background-color: white;
+    /*background-color: white;*/
     padding: 15px;
     height: 84px;
 }
@@ -23,7 +23,7 @@ nav a {
 }
 
 nav a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .logo-header {
@@ -169,8 +169,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-body {
     background-color: #f7f9fc;
 }
 
@@ -182,5 +180,31 @@ h2{
     font-weight: bold;
 }
 
+.fs-1 {
+    font-size: 4.5rem !important;
+}
+.lien-register-home{
+    color: #289a1e;
 
+}
+.btn-nav {
+    font-size: 90%;
+    width: 24%;
+}
 
+.btn-a{
+    border: none;
+    background-color: dodgerblue;
+}
+.bg-clr{
+    background-color: RGB(113, 198, 113);
+    color: white;
+}
+.bg-primary{
+    background-color: RGB(113, 198, 113);
+}
+.card-title{
+    color: dodgerblue;
+    font-weight: bold;
+    text-align: center;
+}

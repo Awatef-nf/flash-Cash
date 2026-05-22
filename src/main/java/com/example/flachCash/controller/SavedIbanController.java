@@ -4,10 +4,12 @@ import com.example.flachCash.domain.User;
 import com.example.flachCash.repository.SavedIbanRepository;
 import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,25 +33,44 @@ public class SavedIbanController {
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         model.addAttribute("user", user);
+        model.addAttribute("savedIban", new SavedIban());
         return "addIban";
     }
 
     @PostMapping("/addIban")
-    public String addIban(@RequestParam String iban,
-                          @RequestParam String bankName,
+    public String addIban(@Valid @ModelAttribute("savedIban") SavedIban savedIban,
+                          BindingResult result,
                           Authentication authentication,
                           RedirectAttributes redirectAttributes) {
 
+        if (result.hasErrors()) {
+            return "addIban";
+        }
+
         String email = authentication.getName();
+
         User user = userService.findUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         try {
-            savedIbanService.addIban(iban, bankName, user);
-            redirectAttributes.addFlashAttribute("success", "IBAN added successfully");
+
+            savedIbanService.addIban(
+                    savedIban.getIban(),
+                    savedIban.getBankName(),
+                    user
+            );
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "IBAN added successfully"
+            );
 
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    e.getMessage()
+            );
         }
 
         return "redirect:/showIban";

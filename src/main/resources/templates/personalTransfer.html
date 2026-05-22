@@ -12,11 +12,8 @@
 <body>
 <div class="content">
     <div th:replace="fragments/header :: header"></div>
-
-
-    <div class="container d-flex justify-content-center">
-
-        <div class="card p-4 shadow" style="width: 350px; margin-bottom: 12%;">
+    <div class="container d-flex justify-content-center" style="margin: 7%;">
+        <div class="card p-4 shadow" style="width: 450px;">
 
             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
             <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
@@ -24,16 +21,17 @@
 
             <form th:action="@{/personalTransfer}" method="post">
                 <div class="mb-3">
-                    <label for="iban"></label>
-                    <select id="iban" name="iban" class="form-select mb-2" required>
-                        <option value="">--Select IBAN --</option>
+                    <label for="Iban"></label>
+                    <select id="Iban" name="Iban" class="form-select mb-2" required>
+                        <option value=""></option>
 
                         <option th:each="saved : ${savedIbans}"
                                 th:value="${saved.iban}"
                                 th:text="${saved.bankName + ' - ' + saved.iban}">
                         </option>
                     </select>
-                    <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" >
+                    <label for="amount"></label>
+                    <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount €" required>
                 </div>
                 <div class="d-grid">
                     <input class="btn-start btn-sm" type="submit" value="Transfer">
@@ -44,5 +42,12 @@
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script>
+    new TomSelect('#iban', {
+        placeholder: 'Select an Iban...',
+        allowEmptyOption: true,
+        items:[]
+    });
+</script>
 </body>
 </html>

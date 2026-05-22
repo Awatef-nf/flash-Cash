@@ -48,7 +48,7 @@ public class SavedIbanService {
         SavedIban savedIban = savedIbanRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("IBAN not found"));
 
-        //it is the userConnected Iban?
+        //it is the userConnected IbanValid?
         if (!savedIban.getUser().getId().equals(user.getId())) {
             throw new SecurityException("Unauthorized");
         }

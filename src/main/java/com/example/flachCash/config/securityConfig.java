@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -60,7 +61,7 @@ public class securityConfig {
                                 .loginPage("/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/profile",true)
+                                .defaultSuccessUrl("/home-profile",true)
                                 .permitAll()
                 ).logout(logout -> logout //on force la session à se deconnecter
                         .deleteCookies("JSESSIONID")
@@ -86,7 +87,7 @@ public class securityConfig {
                         .firstName("user")
                         .lastName("Normal")
                         .email("user@example.com")
-                        .password(passwordEncoder().encode("awatefé&à&_("))
+                        .password(passwordEncoder().encode("Awatef&é12"))
                         .account(account)
                         .role(USER)
                         .build();
@@ -102,7 +103,7 @@ public class securityConfig {
                         .firstName("admin")
                         .lastName("Super")
                         .email("admin@example.com")
-                        .password(passwordEncoder().encode("awatef&é"))
+                        .password(passwordEncoder().encode("Awatefà&01"))
                         .account(account)
                         .role(ADMIN)
                         .build();

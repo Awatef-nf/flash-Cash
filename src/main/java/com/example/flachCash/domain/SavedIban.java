@@ -1,5 +1,6 @@
 package com.example.flachCash.domain;
 
+import com.example.flachCash.validation.IbanValid;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +19,11 @@ public class SavedIban {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @IbanValid
     private String iban;
 
     private String bankName;
+
     @ManyToOne
     private User user;
 

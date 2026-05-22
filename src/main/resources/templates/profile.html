@@ -15,31 +15,25 @@
 <!---------------------------------------------HEADER-->
 <div th:replace="fragments/header :: header"></div>
 <!--------------------------------------------MY PROFILE-->
-<div class="card p-4 shadow">
-    <div class="my-profile">
-        <h2>
-            <span th:text="${user.firstName != null ? #strings.capitalize(user.firstName) : ''}"></span>
-            <span th:text="${user.lastName != null ? #strings.capitalize(user.lastName) : ''}"></span>
-        </h2>
-    </div>
-
+<div class="card p-4 shadow" style="margin: 3%">
 <div class="container d-flex justify-content-start align-items-center justify-content-center">
 <!--ADD Cash to your flashCash-->
 <div class="container d-flex justify-content-center">
 
     <div class="card p-4 shadow" style="width: 350px;">
 
-        <p class="btn btn-primary btn-sm">Add cash to Flash Cash</p>
+        <p class="border p-3 rounded  card-title">Add cash to Flash Cash</p>
         <p class="text-center">Add cash with your credit card</p>
         <p class="text-center ">Free</p>
         <p class="text-center ">Instant deposit</p>
         <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/addCash}" method="get">
-            <div class="d-grid">
-                <input class="btn btn-primary btn-sm" type="submit" value="Start">
-            </div>
-        </form>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a th:href="@{/addCash}" class="btn btn-primary btn-a ">
+                Start
+            </a>
+        </div>
     </div>
 </div>
 
@@ -48,17 +42,18 @@
 
     <div class="card p-4 shadow" style="width: 350px;">
 
-        <p class="btn btn-primary btn-sm">Transfer to your bank</p>
+        <p class="border p-3 rounded card-title">Transfer to your bank</p>
         <p class="text-center ">Instant transfer</p>
         <p class="text-center ">Free</p>
         <p class="text-center ">Worldwide</p>
         <p class="text-center ">Fully secured</p>
         <!-- Buttons -->
-        <form  class="btn-sm" th:action="@{/personalTransfer}" method="get">
-            <div class="d-grid">
-                <input class="btn btn-primary btn-sm" type="submit" value="Start">
-            </div>
-        </form>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a th:href="@{/personalTransfer}" class="btn btn-primary btn-a ">
+                Start
+            </a>
+        </div>
     </div>
 </div>
                             <!--ADD IBAN-->
@@ -67,30 +62,25 @@
 
     <div class="card p-4 shadow" style="width: 350px;">
 
-        <p class="btn btn-primary btn-sm">Add An Iban</p>
+        <p class="border p-3 rounded  card-title">Add An Iban</p>
         <p class="text-center ">Add your IBAN here</p>
         <p class="text-center ">Up to 5 IBAN</p>
         <p class="text-center ">Any bank supported</p>
         <p class="text-center ">Fully secured</p>
             <!-- Buttons -->
         <div class="d-flex justify-content-center gap-3">
-
-            <a th:href="@{/addIban}" class="btn btn-primary btn-sm">
-                <i class="ti ti-player-play"></i>
+            <a th:href="@{/addIban}" class="btn btn-primary btn-a ">
                 Start
             </a>
-
-            <a th:href="@{/showIban}" class="btn btn-primary btn-sm">
-                <i class="ti ti-credit-card"></i>
+            <a th:href="@{/showIban}" class="btn btn-primary btn-a">
                 Show IBAN
             </a>
-
         </div>
     </div>
     </div>
     </div>
                     <!--    Account-->
-    <div class="my-profile">
+    <div class="my-profile border p-3 rounded shadow card-title">
         <h2> My account Balance</h2>
         <div class="container mt-3">
             <table class="table table-hover text-center">
@@ -118,7 +108,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="transfer : ${transfers}">
-                    <td th:text="${transfer.receiverAccount.user.email}"></td>
+                    <td th:text="${transfer.senderAccount.user.email}"></td>
 
                     <td th:text="${#temporals.format(transfer.date, 'dd/MM/yyyy HH:mm')}"></td>
 

@@ -13,23 +13,27 @@
 </head>
 <body>
 <div class="content">
-<header>
-    <div class="d-flex align-items-center mt-2 px-4">
-        <!-- NAV -->
-        <nav class="d-flex gap-4 ms-auto align-items-center " style="margin-right: 7%;">
+    <header>
+        <div class="d-flex align-items-center mt-2 px-4">
+            <!-- NAV -->
+            <nav class="d-flex gap-4 ms-auto align-items-center " style="margin-right: 7%;">
 
-            <a th:href="@{/login}"
-               class="btn bg-clr btn-lg rounded-5" style="font-size: 16px">
-                <i class="bi bi-house"></i> Sign in
-            </a>
+                <a th:href="@{/profile}"
+                   class="btn bg-clr btn-lg rounded-5" style="font-size: 16px">
+                    <i class="bi bi-house"></i> My account
+                </a>
 
-            <a th:href="@{/register}"
-               class="d-flex gap-2 btn btn-primary btn-lg rounded-5" style="font-size: 16px">
-                <i class="bi bi-arrow-left-right"></i> Sign Up
-            </a>
-        </nav>
-    </div>
-</header>
+                <a  class="d-flex gap-2 btn btn-primary btn-lg rounded-5" style="font-size: 16px"
+                    href="#"
+                    onclick="document.getElementById('logout-form').submit()">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+
+                <form id="logout-form" th:action="@{/logout}" method="post" style="display:none"></form>
+            </nav>
+        </div>
+    </header>
     <!-- HERO SECTION -->
     <section class=" d-flex align-items-center">
         <div class="container">
@@ -56,33 +60,14 @@
                         </div>
                     </div>
 
-                    <h2 class="display-5 fw-bold mt-4">
-                        Manage your money easily
-                    </h2>
-
                     <p class="lead text-secondary mt-3">
-                        Send money instantly, add your contacts, and manage your IBANs with a modern and secure interface.
+                                Now, you can add funds to your account
+                        directly from your bank account,securely transfer money
+                            to your friends any time you want
+                                  manage your profile
+                        and enjoy all our financial services
                     </p>
 
-                    <div class="mt-4 d-flex gap-3">
-                        <div>
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            Secure
-                        </div>
-
-                        <div>
-                            <i class="bi bi-lightning-charge-fill text-warning"></i>
-                            Fast
-                        </div>
-
-                        <div>
-                            <i class="bi bi-phone-fill text-primary"></i>
-                            Responsive
-                        </div>
-                    </div>
-                        <p class="lead text-secondary mt-3">
-                            <a class="lien-register-home" style="text-decoration: none;" th:href="@{/register}">Register now</a> to unlock all benefits and features of your account.
-                        </p>
                 </div>
 
                 <!-- RIGHT -->
@@ -98,13 +83,8 @@
         </div>
     </section>
 </div>
-<!-- FOOTER -->
-<footer class="bg-dark text-white py-3 mt-5">
-    <div class="container text-center">
-        <p class="mb-0">
-            © 2026 FlashCash - Money transfer application
-        </p>
-    </div>
-</footer>
+    <!-- FOOTER -->
+    <div th:replace="fragments/footer :: footer"></div>
+
 </body>
 </html>

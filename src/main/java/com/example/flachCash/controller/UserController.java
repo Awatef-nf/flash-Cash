@@ -5,15 +5,19 @@ import com.example.flachCash.domain.Link;
 import com.example.flachCash.domain.SavedIban;
 import com.example.flachCash.domain.Transfer;
 import com.example.flachCash.domain.User;
+import com.example.flachCash.dto.RegisterDto;
 import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.TransferService;
 import com.example.flachCash.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,22 +57,29 @@ public class UserController {
 
     }
 
+//============= REGISTER =========================
 
     @GetMapping("/register")
-    public String showForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("role", USER);
+    public String showRegister(Model model) {
+        model.addAttribute("registerDto", new RegisterDto());
         return "register";
     }
 
     @PostMapping("/register")
-    public String signUp(@ModelAttribute("user") User user, Model model) {
+    public String signUp(@Valid @ModelAttribute("user") RegisterDto dto,
+                         BindingResult result,
+                         Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("registerDto", dto);
+            return "register";
+        }
         try {
-            userService.register(user);
+            userService.register(dto);
             return "redirect:/login";
+
         } catch (IllegalArgumentException e) {
+
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("user", user);
             return "register";
         }
     }

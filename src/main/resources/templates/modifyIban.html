@@ -13,8 +13,9 @@
 <div class="content">
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="container d-flex justify-content-center">
-        <div class="card p-4 shadow">
+    <div class="container d-flex justify-content-center" style="margin: 7%;">
+
+        <div class="card p-4 shadow" style="width: 450px;">
             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
             <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
             <form th:action="@{/modifyIban/{id}(id=${ibanData.id})}" method="post">
