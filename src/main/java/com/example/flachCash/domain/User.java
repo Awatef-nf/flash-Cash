@@ -36,8 +36,15 @@ public class User implements UserDetails {
 
 
 
-    @OneToMany(mappedBy = "userOwner")
+    @OneToMany(mappedBy = "userOwner",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Link> links;
+    //Pour pouvoir supprimer un user il faut aussi supprimer les autres liens
+    @OneToMany(mappedBy = "userFriend",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Link> friendLinks;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")

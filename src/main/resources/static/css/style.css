@@ -199,6 +199,7 @@ h2{
 .bg-clr{
     background-color: RGB(113, 198, 113);
     color: white;
+    border: none;
 }
 .bg-primary{
     background-color: RGB(113, 198, 113);
@@ -207,4 +208,7 @@ h2{
     color: dodgerblue;
     font-weight: bold;
     text-align: center;
+}
+.table{
+    margin-bottom: 0  ;
 }

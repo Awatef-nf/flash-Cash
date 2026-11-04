@@ -4,10 +4,12 @@ import com.example.flachCash.domain.User;
 import com.example.flachCash.domain.UserAccount;
 import com.example.flachCash.dto.RegisterDto;
 import com.example.flachCash.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class UserService {
         }
 
         UserAccount account = UserAccount.builder()
-                .balance(0.0)
+                .balance(BigDecimal.valueOf(0.0))
                 .build();
 
         User user = new User();
@@ -68,4 +70,7 @@ public class UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
+
+    @Transactional
+    public void deleteById(Integer id){  userRepository.deleteById(id);}
 }

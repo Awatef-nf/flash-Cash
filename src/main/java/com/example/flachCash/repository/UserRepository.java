@@ -14,8 +14,11 @@ public interface UserRepository  extends JpaRepository<User, Integer> {
     Optional<User> findUserByEmail(String email);
 
 
+
     @Query("select u from User u left join fetch u.links where u.email = :email")
     Optional<User> findUserByEmailWithLinks(@Param("email") String email);
+
+
 
     // With fetch → All it here
     //user.getLinks(); // link dispo immediately [Link1, Link2]

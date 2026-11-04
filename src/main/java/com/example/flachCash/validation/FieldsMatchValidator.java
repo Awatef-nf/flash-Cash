@@ -1,7 +1,4 @@
 package com.example.flachCash.validation;
-
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
-import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.beanutils.BeanUtils;
@@ -33,7 +30,6 @@ public class FieldsMatchValidator implements ConstraintValidator<FieldsMatch,Obj
         } catch (Exception e) {
             return false;
         }
-
     }
 
     private String getFieldValue(Object value, String firstName) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {

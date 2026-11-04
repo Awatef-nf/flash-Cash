@@ -1,16 +1,10 @@
 package com.example.flachCash.controller;
 
 import com.example.flachCash.domain.Role;
-import com.example.flachCash.domain.SavedIban;
 import com.example.flachCash.domain.User;
-import com.example.flachCash.repository.TransferRepository;
-import com.example.flachCash.repository.UserAccountRepository;
-import com.example.flachCash.service.SavedIbanService;
 import com.example.flachCash.service.TransferService;
 import com.example.flachCash.service.UserAccountService;
-import com.example.flachCash.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Controller
 @AllArgsConstructor
@@ -38,15 +32,15 @@ public class TransferController {
     }
     @PostMapping("/transfer")
     public String transferMoney(@RequestParam String receiverEmail,
-                                @RequestParam Double amount,
+                                @RequestParam BigDecimal amount,
                                 RedirectAttributes redirectAttributes) {
         try {
             transferService.transferMoney(receiverEmail, amount);
-            redirectAttributes.addFlashAttribute("success", "Virement effectué !");
+            redirectAttributes.addFlashAttribute("success", "transfer made !");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/transfer";
         }
-        return "redirect:/profile";
+        return "redirect:/wallet";
     }
 }

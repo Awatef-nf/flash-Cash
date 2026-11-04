@@ -3,6 +3,7 @@ package com.example.flachCash.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,8 +20,8 @@ public class Transfer {
     @ManyToOne
     private UserAccount receiverAccount;
 
-    private Double amountBeforeFee;
-    private Double amountAfterFee;
+    private BigDecimal amountBeforeFee;
+    private BigDecimal amountAfterFee;
 
 
 

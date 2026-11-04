@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -45,11 +46,11 @@ public class UserAccountController {
     @PostMapping("/addCash")
     public String addCash(
             @RequestParam String iban,
-            @RequestParam Double amount
+            @RequestParam BigDecimal amount
     ) {
 
         userAccountService.addCash(iban, amount);
-        return "redirect:/profile";
+        return "redirect:/wallet";
     }
 
     @GetMapping("/personalTransfer")
@@ -69,7 +70,7 @@ public class UserAccountController {
     @PostMapping("/personalTransfer")
     public String personalTransfer(
             @RequestParam String iban,
-            @RequestParam Double amount,
+            @RequestParam BigDecimal amount,
             RedirectAttributes redirectAttributes) {
         try {
 
@@ -79,7 +80,7 @@ public class UserAccountController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/personalTransfer";
         }
-        return "redirect:/profile";
+        return "redirect:/wallet";
     }
 
 

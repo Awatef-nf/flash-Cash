@@ -8,86 +8,79 @@ import com.example.flachCash.repository.TransferRepository;
 import com.example.flachCash.repository.UserAccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class TransferService {
 
     private final UserAccountService userAccountService;
-    private UserAccountRepository userAccountRepository;
+    private final UserAccountRepository userAccountRepository;
     private final TransferRepository transferRepository;
 
+    private static final BigDecimal FEE_RATE = new BigDecimal("0.005"); // 0.5 %
+
+
     @Transactional
-    public void transferMoney(String receiverEmail,
-                              Double amount) {
+    public void transferMoney(String receiverEmail, BigDecimal amount) {
 
         String senderEmail = userAccountService.getCurrentUser().getEmail();
+
         // sender account
         UserAccount senderAccount = (UserAccount) userAccountRepository
-                        .findByUserEmail(senderEmail)
-                        .orElseThrow(() ->
-                                new RuntimeException("Sender not found"));
+                .findByUserEmail(senderEmail)
+                .orElseThrow(() -> new RuntimeException("Sender not found"));
 
         // receiver account
         UserAccount receiverAccount = (UserAccount) userAccountRepository
-                        .findByUserEmail(receiverEmail).orElseThrow(() ->
-                                new RuntimeException("Receiver not found"));
+                .findByUserEmail(receiverEmail)
+                .orElseThrow(() -> new RuntimeException("Receiver not found"));
 
         // amount validation
-        if (amount == null || amount <= 0) {
+        BigDecimal totalDebit = getBigDecimal(amount, senderAccount, receiverAccount);
+
+        // remove amount + fee from sender, add the full amount to receiver
+        senderAccount.setBalance(senderAccount.getBalance().subtract(totalDebit));
+        receiverAccount.setBalance(receiverAccount.getBalance().add(amount));
+
+        userAccountRepository.save(senderAccount);
+        userAccountRepository.save(receiverAccount);
+
+        // history
+        Transfer transfer = new Transfer();
+        transfer.setDate(LocalDateTime.now());
+        transfer.setSenderAccount(senderAccount);
+        transfer.setReceiverAccount(receiverAccount);
+        transfer.setAmountBeforeFee(amount);
+        transfer.setAmountAfterFee(totalDebit);
+        transferRepository.save(transfer);
+    }
+
+    private static @NotNull BigDecimal getBigDecimal(BigDecimal amount, UserAccount senderAccount, UserAccount receiverAccount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Invalid amount");
         }
 
-        // diable to sender to the owner
+        // forbid transfer to yourself
         if (senderAccount.getAccountId().equals(receiverAccount.getAccountId())) {
             throw new RuntimeException("Cannot transfer to yourself");
         }
 
-        // balance verification
-        if (senderAccount.getBalance() < amount) {
+        // fee of transfer (0.5 %), rounded to the cent
+        BigDecimal fee = amount.multiply(FEE_RATE).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal totalDebit = amount.add(fee);
+
+        // balance verification (amount + fee)
+        if (senderAccount.getBalance().compareTo(totalDebit) < 0) {
             throw new RuntimeException("Insufficient balance");
         }
-
-        // fee of transfer
-        double fee = amount * 0.05;
-
-        double amountAfterFee = amount - fee;
-
-        // remove amount from sender account
-        senderAccount.setBalance(
-                senderAccount.getBalance() - amount
-        );
-
-        // add amount to receiver account
-        receiverAccount.setBalance(
-                receiverAccount.getBalance() + amountAfterFee
-        );
-
-        // save
-        userAccountRepository.save(senderAccount);
-        userAccountRepository.save(receiverAccount);
-
-        // historical
-        Transfer transfer = new Transfer();
-
-        transfer.setDate(LocalDateTime.now());
-
-        transfer.setSenderAccount(senderAccount);
-
-        transfer.setReceiverAccount(receiverAccount);
-
-        transfer.setAmountBeforeFee(amount);
-
-        transfer.setAmountAfterFee(amountAfterFee);
-
-        transferRepository.save(transfer);
+        return totalDebit;
     }
 
 

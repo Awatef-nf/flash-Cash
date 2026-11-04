@@ -12,12 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.math.BigDecimal;
 
 import static com.example.flachCash.domain.Role.ADMIN;
 import static com.example.flachCash.domain.Role.USER;
@@ -26,6 +27,7 @@ import static com.example.flachCash.domain.Role.USER;
 @Configuration
 @EnableWebSecurity //activation de web security
 @RequiredArgsConstructor // pour éviter les autowired
+@EnableMethodSecurity
 public class securityConfig {
 
     private final UserRepository userRepository;
@@ -52,10 +54,11 @@ public class securityConfig {
                         //authorization forward( intern redirection) and error (request of error vue)(404 ET 500)
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/profile/**", "/transaction/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/wallet/**", "/transaction/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(
                         form ->form
                                 .loginPage("/login")
@@ -81,7 +84,7 @@ public class securityConfig {
 
             if (userRepository.findUserByEmail("user@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
-                        .balance(0.0)
+                        .balance(BigDecimal.valueOf(0.0))
                         .build();
                 User user = User.builder()
                         .firstName("user")
@@ -96,7 +99,7 @@ public class securityConfig {
 
             if (userRepository.findUserByEmail("admin@example.com").isEmpty()) {
                 UserAccount account = UserAccount.builder()
-                        .balance(100.0)
+                        .balance(BigDecimal.valueOf(100.0))
                         .build();
 
                 User admin = User.builder()
